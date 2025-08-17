@@ -18,6 +18,9 @@ out/
 *.csproj.user
 *.csproj.launchSettings.json
 
+# .NET app settings (sensitive)
+**/appsettings.json
+
 # -----------------------
 # Node / Expo / React Native
 # -----------------------
