@@ -1,0 +1,6 @@
+@KombetoBackend_HostAddress = http://localhost:5296
+
+GET {{KombetoBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,54 @@
+using KombetoBackend.Models.Data;
+using KombetoBackend.Models.DTOs;
+using KombetoBackend.Services;
+using Microsoft.EntityFrameworkCore;
+
+namespace KombetoBackend.Endpoints;
+
+public static class LoginEndpoints
+{
+    public static void MapLoginEndpoints(this WebApplication app)
+    {
+        app.MapPost("/login/customer", async (AppDbContext db, LoginDto dto, IConfiguration config) =>
+        {
+            var customer = await db.Customers
+                .Where(c => c.SecurityCode == dto.SecurityCode)
+                .FirstOrDefaultAsync();
+            
+            if (customer is null) return Results.Unauthorized();
+
+            if (customer.DeviceId is null)
+            {
+                customer.DeviceId = dto.DeviceId;
+                await db.SaveChangesAsync();
+            }
+            
+            if (customer.DeviceId != dto.DeviceId) return Results.Unauthorized();
+            
+            var jwt = SecurityService.GenerateJwtCustomer(customer, config);
+            
+            return Results.Ok(new JwtDto() {Token = jwt});
+        });
+
+        app.MapPost("/login/owner", async (AppDbContext db, LoginDto dto, IConfiguration config) =>
+        {
+            var owner = await db.Owners
+                .Where(o => o.SecurityCode == dto.SecurityCode)
+                .FirstOrDefaultAsync();
+            
+            if (owner is null) return Results.Unauthorized();
+
+            if (owner.DeviceId is null)
+            {
+                owner.DeviceId = dto.DeviceId;
+                await db.SaveChangesAsync();
+            }
+
+            if (owner.DeviceId != dto.DeviceId) return Results.Unauthorized();
+            
+            var jwt = SecurityService.GenerateJwtOwner(owner, config);
+            
+            return Results.Ok(new JwtDto() {Token = jwt});
+        });
+    }
+}

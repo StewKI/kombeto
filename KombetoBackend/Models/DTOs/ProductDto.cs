@@ -1,0 +1,23 @@
+namespace KombetoBackend.Models.DTOs;
+
+public record ProductDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
+    public decimal Price { get; set; }
+    public string? ImageUrl { get; set; }
+}
+
+public record CreateProductDto
+{
+    public string Name { get; set; } = null!;
+    public decimal Price { get; set; }
+    public string? ImageUrl { get; set; }
+}
+
+public record UpdateProductDto
+{
+    public string? Name { get; set; }
+    public decimal? Price { get; set; }
+    public string? ImageUrl { get; set; }
+}
