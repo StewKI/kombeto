@@ -63,7 +63,7 @@ public static class SecurityService
             issuer: JwtIssuer,
             audience: JwtAudience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddYears(10),
             signingCredentials: credentials
         );
 
