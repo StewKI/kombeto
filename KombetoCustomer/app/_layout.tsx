@@ -47,9 +47,13 @@ export default function RootLayout() {
 function RootLayoutNav() {
 
   return (
-    <GluestackUIProvider mode="light"><Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="cart" options={{ presentation: 'modal', headerTitle: 'Korpa' }} />
-      </Stack></GluestackUIProvider>
+    <GluestackUIProvider mode="light">
+      <>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="cart" options={{ presentation: 'modal', headerTitle: 'Korpa' }} />
+        </Stack>
+      </>
+    </GluestackUIProvider>
   );
 }

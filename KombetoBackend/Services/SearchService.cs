@@ -12,7 +12,9 @@ public static class SearchService
     {
         if (_cachedProducts is null)
         {
-            _cachedProducts = await db.Products.ToListAsync();
+            _cachedProducts = await db.Products
+                .Include(p => p.Discounts)
+                .ToListAsync();
         }
         return _cachedProducts;
     }

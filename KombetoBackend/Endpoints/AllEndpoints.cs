@@ -9,5 +9,6 @@ public static class AllEndpoints
         app.MapOrderEndpoints();
         app.MapLoginEndpoints();
         app.MapOwnerEndpoints();
+        app.MapDiscountEndpoints();
     }
 }

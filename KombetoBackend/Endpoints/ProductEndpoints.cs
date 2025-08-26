@@ -35,16 +35,40 @@ public static class ProductEndpoints
                 .Take(pageSize)
                 .Select(ps => ps.Product)
                 .ToList();
+            
+            // Discounts
+            var final = paged.Select(p =>
+            {
+                var discounts = p.Discounts
+                    .Select(d => new DiscountDto()
+                    {
+                        Id = d.Id,
+                        Name = d.Name,
+                        Discount = d.AmountPercents,
+                        EndDate = d.EndDate,
+                        Color = d.Color
+                    })
+                    .ToList();
+
+                return new ProductWithDiscountsDto()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    Discounts = discounts,
+                };
+            });
 
             return Results.Ok(new
             {
                 TotalItems = filteredWithScores.Count,
                 Page = page,
                 PageSize = pageSize,
-                Items = paged
+                Items = final
             });
             
-        }).RequireAuthorization("CustomerOwner");
+        }).RequireAuthorization("Customer");
 
 
         app.MapGet("/products/{id:int}", async (AppDbContext db, int id) =>

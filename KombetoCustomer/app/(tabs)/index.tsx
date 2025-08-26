@@ -1,14 +1,15 @@
 import {StyleSheet, View, Text} from 'react-native';
 import {useEffect, useState} from "react";
-import {Product} from "@/services/types";
+import {ProductWithDiscounts} from "@/services/types";
 import ProductBackend from "@/services/models/product/ProductBackend";
 import ProductList from "@/components/models/product/ProductList";
 import {Button, ButtonText} from "@/components/ui/button";
+import Modals from "@/components/custom/Modals";
 
 
 export default function TabOneScreen() {
   
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<ProductWithDiscounts[]>([])
   
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -47,6 +48,7 @@ export default function TabOneScreen() {
           </Button>
         </>
       )}
+      <Modals/>
       <ProductList products={products}/>
     </>
   );

@@ -3,6 +3,9 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 import {FontAwesome6, Ionicons} from "@expo/vector-icons";
+import { Card } from '@/components/ui/card';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 
 
 function TabBarIcon(props: {
@@ -35,11 +38,22 @@ export default function TabLayout() {
             <Link href="/cart" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="shopping-cart"
-                    size={25}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
+                  <Card 
+                    variant="outline"
+                    className={`m-3 p-3 ${pressed && "opacity-50"}`}
+                  >
+                    <HStack>
+                      <Text>
+                        Korpa
+                      </Text>
+                      <FontAwesome
+                        name="shopping-cart"
+                        size={20}
+                        className="ml-2"
+                      />
+                    </HStack>
+                  </Card>
+                  
                 )}
               </Pressable>
             </Link>

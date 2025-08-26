@@ -21,3 +21,8 @@ public record UpdateProductDto
     public decimal? Price { get; set; }
     public string? ImageUrl { get; set; }
 }
+
+public record ProductWithDiscountsDto : ProductDto
+{
+    public IList<DiscountDto> Discounts { get; set; } = [];
+}

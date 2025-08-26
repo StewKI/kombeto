@@ -1,10 +1,10 @@
-import {Product} from "@/services/types";
+import {ProductWithDiscounts} from "@/services/types";
 import {Grid, GridItem} from "@/components/ui/grid"
 import ProductCard from "@/components/models/product/ProductCard";
 import {ScrollView} from "react-native";
 
 interface ProductListProps {
-  products: Product[];
+  products: ProductWithDiscounts[];
 }
 
 function ProductList({products}: ProductListProps) {

@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public DbSet<Owner> Owners => Set<Owner>();
+    public DbSet<Discount> Discounts => Set<Discount>();
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
