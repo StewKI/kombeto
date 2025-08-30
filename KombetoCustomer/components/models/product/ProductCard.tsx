@@ -37,15 +37,15 @@ function ProductCard({product}: ProductCardProps) {
         {isDiscounted ? (
           <VStack>
             <Text size="sm" strikeThrough>
-              RSD {product.price.toFixed(2)}
+              {product.price.toFixed(2)} RSD
             </Text>
             <Text size="lg" bold>
-              RSD {discountedPrice.toFixed(2)}
+              {discountedPrice.toFixed(2)} RSD
             </Text>
           </VStack>
         ) : (
           <Text size="lg">
-            RSD {product.price.toFixed(2)}
+            {product.price.toFixed(2)} RSD
           </Text>
         )}
         

@@ -1,7 +1,7 @@
 
 import {Drawer, DrawerBackdrop, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader} from "@/components/ui/drawer"
 import {Text} from "@/components/ui/text";
-import {useProductToAddStore} from "@/services/state/CartState";
+import {useCartStore, useProductToAddStore} from "@/services/state/CartState";
 import {Heading} from "@/components/ui/heading";
 import React, {useMemo, useState} from "react";
 import {Product, ProductWithDiscounts} from "@/services/types";
@@ -13,6 +13,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {HStack} from "@/components/ui/hstack";
 import DiscountCard from "@/components/models/discount/DiscountCard";
 import DiscountsApplyList from "@/components/models/discount/DiscountsApplyList";
+import XButton from "@/components/custom/XButton";
 
 function AddToCart() {
   
@@ -29,7 +30,14 @@ function AddToCart() {
   }, [product])
   
   const [quantity, setQuantity] = useState(1);
+
+  const {addProductToCart} = useCartStore();
   
+  function handleAdd() {
+    addProductToCart(productSafe, quantity);
+    resetProduct();
+  }
+
   return (
     <Drawer
       isOpen={product != null}
@@ -43,12 +51,7 @@ function AddToCart() {
           <VStack className="w-full">
             <HStack className="w-full justify-between items-center">
               <Heading>{productSafe.name}</Heading>
-              <Button
-                variant={"outline"}
-                onPress={() => resetProduct()}
-              >
-                <FontAwesome name="times" size={26} color="black"/>
-              </Button>
+              <XButton onClick={() => resetProduct()}/>
             </HStack>
           </VStack>
         </DrawerHeader>
@@ -76,6 +79,7 @@ function AddToCart() {
             </HStack>
             <Button
               className={"w-full h-[50px] mb-5 rounded-lg"}
+              onPress={() => handleAdd()}
             >
               <ButtonText>Dodaj u korpu</ButtonText>
               <FontAwesome

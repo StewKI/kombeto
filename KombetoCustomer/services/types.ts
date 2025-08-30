@@ -22,3 +22,5 @@ export type Discount = {
   endDate?: string,
   color: string,
 }
+
+export type CartItem = ProductWithDiscounts & { quantity: number }

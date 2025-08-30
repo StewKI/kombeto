@@ -26,13 +26,13 @@ function DiscountsApplyList({basePrice, discounts}: DiscountsApplyListProps) {
       {
         sortedDiscounts.map((discount, index) => (
           <HStack key={discount.id} space="md">
-            <Text size="sm" className="align-middle" strikeThrough>RSD {prices[index].toFixed(2)}</Text>
+            <Text size="sm" className="align-middle" strikeThrough>{prices[index].toFixed(2)} RSD</Text>
             <DiscountCard discount={discount}/>
           </HStack>
         ))
       }
       <Text bold size="2xl" className="mt-4">
-        RSD {prices[prices.length - 1].toFixed(2)}
+        {prices[prices.length - 1].toFixed(2)} RSD
       </Text>
     </VStack>
   )

@@ -6,6 +6,7 @@ import {FontAwesome6, Ionicons} from "@expo/vector-icons";
 import { Card } from '@/components/ui/card';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
+import {CartCountSum, useCartStore} from "@/services/state/CartState";
 
 
 function TabBarIcon(props: {
@@ -22,8 +23,17 @@ function TabBarIconIonicons(props: {
   return <Ionicons size={20} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export default function TabLayout() {
+function TabBarIconFontAwesome(props: {
+  name: React.ComponentProps<typeof FontAwesome>['name'];
+  color: string;
+}) {
+  return <FontAwesome size={20} style={{ marginBottom: -3 }} {...props} />;
+}
 
+export default function TabLayout() {
+  
+  const {cartItems} = useCartStore();
+  
   return (
     <Tabs
       screenOptions={{
@@ -34,36 +44,27 @@ export default function TabLayout() {
         options={{
           title: 'Kombeto',
           tabBarIcon: ({ color }) => <TabBarIcon name="shop" color={color} />,
-          headerRight: () => (
-            <Link href="/cart" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <Card 
-                    variant="outline"
-                    className={`m-3 p-3 ${pressed && "opacity-50"}`}
-                  >
-                    <HStack>
-                      <Text>
-                        Korpa
-                      </Text>
-                      <FontAwesome
-                        name="shopping-cart"
-                        size={20}
-                        className="ml-2"
-                      />
-                    </HStack>
-                  </Card>
-                  
-                )}
-              </Pressable>
-            </Link>
-          ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="search"
         options={{
-          title: 'Profil',
+          title: 'Pretraga',
+          tabBarIcon: ({ color }) => <TabBarIconIonicons name="search" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="cart"
+        options={{
+          title: 'Korpa',
+          tabBarBadge: cartItems.length > 0 ? CartCountSum(cartItems) : undefined,
+          tabBarIcon: ({ color }) => <TabBarIconFontAwesome name="shopping-cart" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Moj nalog',
           tabBarIcon: ({ color }) => <TabBarIconIonicons name="person" color={color} />,
         }}
       />

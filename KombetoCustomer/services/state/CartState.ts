@@ -1,7 +1,8 @@
 import {create} from 'zustand';
-import {ProductWithDiscounts} from "@/services/types";
+import {CartItem, ProductWithDiscounts} from "@/services/types";
 import {createJSONStorage, persist} from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Q} from "@expo/html-elements";
 
 type ProductToAddStore = {
   product: ProductWithDiscounts | null;
@@ -17,26 +18,67 @@ export const useProductToAddStore = create<ProductToAddStore>((set) => ({
 
 
 type CartStore = {
-  cartProducts: ProductWithDiscounts[];
-  addProductToCart: (product: ProductWithDiscounts) => void;
+  cartItems: CartItem[];
+  addProductToCart: (product: ProductWithDiscounts, quantity: number) => void;
   clearCart: () => void;
-  cartCount: () => number;
+  
+  removeItem: (id: number) => void;
+  updateQuantity: (id: number, quantity: number) => void;
 }
 
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
-      cartProducts: [],
+      cartItems: [],
 
-      addProductToCart: (product) =>
+      addProductToCart: (product, quantity) => {
+        
+        const oldItems = get().cartItems;
+        const oldItem = oldItems.find((item) => item.id === product.id);
+        if (oldItem) {
+          const newQuantity = oldItem.quantity + quantity;
+          const newItems = oldItems.map((item) => {
+            if (item.id === product.id) {
+              return { ...item, quantity: newQuantity };
+            }
+            return item;
+          });
+          set({ cartItems: newItems });
+          return;
+        }
+        
+        const newItem: CartItem = {
+          quantity: quantity,
+          ...product,
+        }
+        
+        const newItems = [...get().cartItems, newItem]
+        
         set((state) => ({
-          cartProducts: [...state.cartProducts, product],
-        })),
+          cartItems: newItems,
+        }))
+      },
 
-      clearCart: () => set({ cartProducts: [] }),
+      clearCart: () => set({ 
+        cartItems: [],
+      }),
 
-      cartCount: () => get().cartProducts.length,
+      
+      removeItem: (id) => {
+        const newItems = get().cartItems.filter((item) => item.id !== id);
+        set({ cartItems: newItems });
+      },
+      
+      updateQuantity: (id, quantity) => {
+        const newItems: CartItem[] = get().cartItems.map((item) => {
+          if (item.id === id) {
+            return { ...item, quantity };
+          }
+          return item;
+        })
+        set({ cartItems: newItems });
+      }
     }),
     {
       name: "cart-storage", // storage key
@@ -44,3 +86,7 @@ export const useCartStore = create<CartStore>()(
     }
   )
 );
+
+export function CartCountSum(items: CartItem[]) {
+  return items.reduce((acc, item) => acc + item.quantity, 0);
+}
