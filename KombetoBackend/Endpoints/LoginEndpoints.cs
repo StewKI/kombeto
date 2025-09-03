@@ -1,5 +1,6 @@
 using KombetoBackend.Models.Data;
 using KombetoBackend.Models.DTOs;
+using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,5 +51,16 @@ public static class LoginEndpoints
             
             return Results.Ok(new JwtDto() {Token = jwt});
         });
+        
+        app.MapGet("/logged_in/customer", async (IUserContextService userContextService) =>
+        {
+
+            var loggedCustomer = await userContextService.GetCustomer();
+            
+            if (loggedCustomer is null) return Results.Unauthorized();
+            
+            return Results.Ok(loggedCustomer.MapDto());
+
+        }).RequireAuthorization("Customer");
     }
 }

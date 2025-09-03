@@ -24,6 +24,8 @@ public class Discount
     [MaxLength(7)]
     [MinLength(7)]
     public string Color { get; set; } = null!;
+
+    public bool IsOnHomePage { get; set; } = false;
     
     public ICollection<Product> Products { get; set; } = new List<Product>();
 }

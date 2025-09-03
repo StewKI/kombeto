@@ -42,7 +42,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Kombeto',
+          title: 'Početna',
           tabBarIcon: ({ color }) => <TabBarIcon name="shop" color={color} />,
         }}
       />

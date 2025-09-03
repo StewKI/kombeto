@@ -26,3 +26,10 @@ public record ProductWithDiscountsDto : ProductDto
 {
     public IList<DiscountDto> Discounts { get; set; } = [];
 }
+
+public record ProductSectionDto
+{
+    public string DisplayType { get; set; } = null!;
+    public string Name { get; set; } = null!;
+    public List<ProductWithDiscountsDto> Products { get; set; } = new();
+}

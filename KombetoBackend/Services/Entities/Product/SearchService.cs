@@ -1,14 +1,23 @@
 using KombetoBackend.Models.Data;
-using KombetoBackend.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace KombetoBackend.Services;
+namespace KombetoBackend.Services.Entities.Product;
 
-public static class SearchService
+public class SearchService
 {
-    private static List<Product>? _cachedProducts;
+    private readonly AppDbContext db;
+    private List<Models.Entities.Product>? _cachedProducts;
+    private readonly int maxDistance;
 
-    private static async Task<List<Product>> GetFromDb(AppDbContext db)
+    public SearchService(AppDbContext db, IConfiguration config)
+    {
+        this.db = db;
+        this.maxDistance = config.GetValue<int>("BusinessLogic:Product:SearchMaxDistance");
+    }
+    
+    
+
+    private async Task<List<Models.Entities.Product>> GetFromDb()
     {
         if (_cachedProducts is null)
         {
@@ -19,13 +28,13 @@ public static class SearchService
         return _cachedProducts;
     }
 
-    public static void ResetCache()
+    public void ResetCache()
     {
         _cachedProducts = null;
         ProductSearchCache.Clear();
     }
 
-    public static async Task<List<ProductWithScore>> Search(AppDbContext db, string search, int maxDistance)
+    public async Task<List<ProductWithScore>> Search(string search)
     {
         if (!ProductSearchCache.TryGet(search, out var filteredWithScores))
         {
@@ -34,7 +43,7 @@ public static class SearchService
                 .Select(w => w.Trim())
                 .ToArray();
 
-            var allProducts = await GetFromDb(db);
+            var allProducts = await GetFromDb();
 
             filteredWithScores = allProducts
                 .Select(p => new ProductWithScore(p, ComputeScore(p, searchWords)))
@@ -47,7 +56,7 @@ public static class SearchService
         return filteredWithScores;
     }
     
-    private static int ComputeScore(Product product, string[] searchWords)
+    private static int ComputeScore(Models.Entities.Product product, string[] searchWords)
     {
         var nameWords = product.Name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         int totalDistance = 0;
@@ -64,7 +73,7 @@ public static class SearchService
     
 }
 
-public record ProductWithScore(Product Product, int Score);
+public record ProductWithScore(Models.Entities.Product Product, int Score);
 
 public static class ProductSearchCache
 {

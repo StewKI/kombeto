@@ -9,8 +9,10 @@ namespace KombetoBackend.Endpoints;
 
 public static class CustomerEndpoints
 {
+    
     public static void MapCustomerEndpoints(this WebApplication app)
     {
+        
         app.MapPost("/customers", async (
             AppDbContext db, 
             CreateCustomerDto dto, 

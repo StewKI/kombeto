@@ -46,6 +46,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CustomerOwner", policy => policy.RequireRole("Customer", "Owner", "Admin"));
 });
 
+builder.Services.AddMyServices();
+
 var app = builder.Build();
 
 app.UseAuthentication();

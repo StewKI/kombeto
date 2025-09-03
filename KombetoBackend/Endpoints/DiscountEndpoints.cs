@@ -3,6 +3,7 @@ using KombetoBackend.Models.Data;
 using KombetoBackend.Models.DTOs;
 using KombetoBackend.Models.Entities;
 using KombetoBackend.Services;
+using KombetoBackend.Services.Entities.Product;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KombetoBackend.Endpoints;
@@ -14,7 +15,8 @@ public static class DiscountEndpoints
         app.MapPost("/discounts", async (
             CreateDiscountDto dto, 
             AppDbContext db,
-            IValidator<CreateDiscountDto> validator) =>
+            IValidator<CreateDiscountDto> validator,
+            SearchService searchService) =>
         {
             var validationResult = await validator.ValidateAsync(dto);
             if (!validationResult.IsValid) return Results.BadRequest(validationResult.Errors);
@@ -38,7 +40,7 @@ public static class DiscountEndpoints
             db.Discounts.Add(discount);
             await db.SaveChangesAsync();
             
-            SearchService.ResetCache();
+            searchService.ResetCache();
             
             return Results.Created($"/discounts/{discount.Id}", discount.Id);
         }).RequireAuthorization("CustomerOwner");

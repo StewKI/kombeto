@@ -18,7 +18,7 @@ export class UnauthorizedError extends Error {
 
 export default class ApiService {
   public static readonly BASE_URL =
-    process.env.API_BASE_URL ?? "http://10.233.238.43:5296/";
+    process.env.API_BASE_URL ?? "http://10.37.183.43:5296/";
 
   private static buildHeaders(
     headers?: Record<string, string>,

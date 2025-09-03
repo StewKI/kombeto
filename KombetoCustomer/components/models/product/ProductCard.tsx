@@ -9,6 +9,7 @@ import {useProductToAddStore} from "@/services/state/CartState";
 import {useMemo} from "react";
 import DiscountUtil from "@/services/models/discount/DiscountUtil";
 import ProductImageBadges from "@/components/models/product/ProductImageBadges";
+import {Pressable} from "@/components/ui/pressable";
 
 interface ProductCardProps {
   product: ProductWithDiscounts;
@@ -27,35 +28,40 @@ function ProductCard({product}: ProductCardProps) {
   }, [product])
 
   return (
-    <Card size="md" variant="elevated">
-      <VStack space="md">
-        
-        <ProductImageBadges product={product}/>
-        
-        <Heading size="md">{product.name}</Heading>
-        
-        {isDiscounted ? (
-          <VStack>
-            <Text size="sm" strikeThrough>
-              {product.price.toFixed(2)} RSD
-            </Text>
-            <Text size="lg" bold>
-              {discountedPrice.toFixed(2)} RSD
-            </Text>
+    <Pressable
+      onPress={() => {
+        setProduct(product);
+      }}
+      style={{flexGrow: 1}}
+    >
+      {({ pressed }) => (
+        <Card size="md" variant={pressed ? "outline" : "elevated"} style={{flexGrow: 1}}>
+          <VStack space="md">
+
+            <ProductImageBadges product={product}/>
+
+            {isDiscounted ? (
+              <VStack>
+                <Text size="sm" strikeThrough>
+                  {product.price.toFixed(2)} RSD
+                </Text>
+                <Heading size="lg">
+                  {discountedPrice.toFixed(2)} RSD
+                </Heading>
+              </VStack>
+            ) : (
+              <Heading size="lg">
+                {product.price.toFixed(2)} RSD
+              </Heading>
+            )}
+
+            <Text size="md">{product.name}</Text>
+
           </VStack>
-        ) : (
-          <Text size="lg">
-            {product.price.toFixed(2)} RSD
-          </Text>
-        )}
-        
-        <Button size="md" variant="solid"
-          onPress={() => setProduct(product)}
-        >
-          <ButtonText>Pogledaj</ButtonText>
-        </Button>
-      </VStack>
-    </Card>
+        </Card>
+      )}
+      
+    </Pressable>
   );
 }
 

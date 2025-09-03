@@ -24,3 +24,17 @@ export type Discount = {
 }
 
 export type CartItem = ProductWithDiscounts & { quantity: number }
+
+export type ProductSectionData = {
+  name: string,
+  displayType: "grid" | "horizontal",
+  products: ProductWithDiscounts[],
+}
+
+export type Customer = {
+  id: number,
+  name: string,
+  phone: string,
+  address: string,
+  discount: number,
+}
