@@ -9,6 +9,12 @@ type CustomerStore = {
 }
 
 export const useCustomerStore = create<CustomerStore>((set) => ({
-  customer: null!,
+  customer: {
+    id: 0,
+    name: "Nepoznat korisnik",
+    phone: "/",
+    address: "/",
+    discount: 0
+  },
   setCustomer: (customer) => set({customer}),
 }))

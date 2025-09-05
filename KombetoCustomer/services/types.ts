@@ -38,3 +38,9 @@ export type Customer = {
   address: string,
   discount: number,
 }
+
+export type Category = {
+  id: number,
+  name: string,
+  color: string,
+}
