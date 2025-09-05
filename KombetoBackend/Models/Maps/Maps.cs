@@ -44,4 +44,24 @@ public static class Maps
             Discount = c.Discount,
         };
     }
+
+    public static CategoryDto MapDto(this Category c)
+    {
+        return new CategoryDto()
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Color = c.Color
+        };
+    }
+
+    public static Category MapFromDto(this CreateCategoryDto c)
+    {
+        return new Category()
+        {
+            Id = 0,
+            Name = c.Name,
+            Color = c.Color
+        };
+    }
 }

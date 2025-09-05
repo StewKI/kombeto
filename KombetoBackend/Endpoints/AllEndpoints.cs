@@ -12,5 +12,6 @@ public static class AllEndpoints
         app.MapLoginEndpoints();
         app.MapOwnerEndpoints();
         app.MapDiscountEndpoints();
+        app.MapCategoryEndpoints();
     }
 }

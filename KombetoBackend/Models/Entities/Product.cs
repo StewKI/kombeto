@@ -21,4 +21,6 @@ public class Product
     public string? ImageUrl { get; set; }
     
     public ICollection<Discount> Discounts { get; set; } = new List<Discount>();
+
+    public ICollection<Category> Categories { get; set; } = new List<Category>();
 }
