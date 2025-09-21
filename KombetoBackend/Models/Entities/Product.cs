@@ -16,9 +16,15 @@ public class Product
 
     [Precision(18, 2)]
     public decimal Price { get; set; }
-
+    
     [MaxLength(500)]
     public string? ImageUrl { get; set; }
+
+    /// <summary>
+    /// Tilda separated list of values like "soft~medium~hard"
+    /// </summary>
+    [MaxLength(256)]
+    public string? Variations { get; set; } = null;
     
     public ICollection<Discount> Discounts { get; set; } = new List<Discount>();
 

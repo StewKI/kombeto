@@ -1,6 +1,7 @@
 using KombetoBackend.Models.Data;
 using KombetoBackend.Models.DTOs;
 using KombetoBackend.Models.Entities;
+using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
 using KombetoBackend.Services.Entities.Product;
 
@@ -15,18 +16,13 @@ public static class OwnerProductEndpoints
         app.MapGet("/products/{id:int}", async (AppDbContext db, int id) =>
         {
             var product = await db.Products.FindAsync(id);
-            return product is not null ? Results.Ok(product) : Results.NotFound();
+            return product is not null ? Results.Ok(product.MapDto()) : Results.NotFound();
 
         }).RequireAuthorization("CustomerOwner");
         
         app.MapPost("/products", async (AppDbContext db, CreateProductDto dto, SearchService searchService) =>
         {
-            var product = new Product
-            {
-                Name = dto.Name,
-                Price = dto.Price,
-                ImageUrl = dto.ImageUrl
-            };
+            var product = dto.MapFromDto();
             db.Products.Add(product);
             await db.SaveChangesAsync();
             
@@ -49,6 +45,11 @@ public static class OwnerProductEndpoints
             }
             if (dto.Price.HasValue) product.Price = dto.Price.Value;
             if (dto.ImageUrl is not null) product.ImageUrl = dto.ImageUrl;
+            if (dto.Variations is not null)
+            {
+                if (dto.Variations.Length == 0) product.Variations = null;
+                else product.Variations = dto.Variations;
+            }
         
             await db.SaveChangesAsync();
             

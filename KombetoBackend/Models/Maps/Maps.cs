@@ -29,6 +29,7 @@ public static class Maps
             Name = p.Name,
             Price = p.Price,
             ImageUrl = p.ImageUrl,
+            Variations = p.Variations,
             Discounts = discounts,
         };
     }
@@ -64,4 +65,28 @@ public static class Maps
             Color = c.Color
         };
     }
+
+    public static ProductDto MapDto(this Product p)
+    {
+        return new ProductDto()
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            ImageUrl = p.ImageUrl,
+            Variations = p.Variations
+        };
+    }
+
+    public static Product MapFromDto(this CreateProductDto dto)
+    {
+        return new Product
+        {
+            Name = dto.Name,
+            Price = dto.Price,
+            ImageUrl = dto.ImageUrl,
+            Variations = dto.Variations
+        };
+    }
+    
 }

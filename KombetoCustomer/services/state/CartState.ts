@@ -24,6 +24,10 @@ type CartStore = {
   
   removeItem: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
+  
+  addVariation: (id: number, variation: string) => void;
+  removeVariation: (id: number, variation: string) => void;
+  removeVariationAll: (id: number, variation: string) => void;
 }
 
 
@@ -50,6 +54,7 @@ export const useCartStore = create<CartStore>()(
         
         const newItem: CartItem = {
           quantity: quantity,
+          variation_list: [],
           ...product,
         }
         
@@ -78,6 +83,51 @@ export const useCartStore = create<CartStore>()(
           return item;
         })
         set({ cartItems: newItems });
+      },
+      
+      addVariation: (id, variation) => {
+        const newItems: CartItem[] = get().cartItems.map((item) => {
+          if (item.id === id) {
+            return { 
+              ...item, 
+              variation_list: [...item.variation_list, variation]
+            };
+          }
+          return item;
+        })
+        set({cartItems: newItems});
+      },
+      
+      removeVariation: (id, variation) => {
+        const newItems: CartItem[] = get().cartItems.map((item) => {
+          if (item.id === id) {
+
+            const items = [...item.variation_list];
+            const index = items.indexOf(variation);
+            if (index !== -1) {
+              items.splice(index, 1); // removes just one occurrence
+            }
+            return {
+              ...item,
+              variation_list: items
+            };
+          }
+          return item;
+        })
+        set({cartItems: newItems});
+      },
+      
+      removeVariationAll: (id, variation) => {
+        const newItems: CartItem[] = get().cartItems.map((item) => {
+          if (item.id === id) {
+            return {
+              ...item,
+              variation_list: item.variation_list.filter(v => v !== variation)
+            };
+          }
+          return item;
+        })
+        set({cartItems: newItems});
       }
     }),
     {

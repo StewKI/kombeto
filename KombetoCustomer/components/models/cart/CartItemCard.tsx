@@ -38,7 +38,7 @@ function CartItemCard({item}: CartItemCardProps) {
   }, [item])
 
   return (
-    <Card size={"sm"}>
+    <Card size={"sm"} className="border-2 rounded-2xl">
       
       <Box className="absolute top-2 right-2" style={{zIndex: 10}}>
         <XButton onClick={() => removeItem(item.id)}/>
@@ -64,7 +64,7 @@ function CartItemCard({item}: CartItemCardProps) {
           
           <HStack space={"sm"} className="items-center">
             <Text size="sm">
-              Jed. cena:
+              Komad:
             </Text>
             <Text size="sm" bold>
               {discountedPrice.toFixed(2)} RSD

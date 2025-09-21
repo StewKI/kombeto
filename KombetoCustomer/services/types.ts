@@ -3,6 +3,7 @@ export type Product = {
   id: number,
   name: string,
   price: number,
+  variations?: string,
   imageUrl?: string,
 }
 
@@ -23,7 +24,10 @@ export type Discount = {
   color: string,
 }
 
-export type CartItem = ProductWithDiscounts & { quantity: number }
+export type CartItem = ProductWithDiscounts & { 
+  quantity: number,
+  variation_list: string[],
+}
 
 export type ProductSectionData = {
   name: string,

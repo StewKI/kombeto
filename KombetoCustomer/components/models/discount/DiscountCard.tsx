@@ -1,6 +1,6 @@
 import {Discount} from "@/services/types";
 import {useMemo} from "react";
-import ColorUtil from "@/services/ui/ColorUtil";
+import ColorUtil from "@/services/general/ColorUtil";
 import {Card} from "@/components/ui/card";
 import {HStack} from "@/components/ui/hstack";
 import {Text} from "@/components/ui/text";

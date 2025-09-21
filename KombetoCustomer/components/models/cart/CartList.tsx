@@ -9,13 +9,11 @@ interface CartListProps {
 
 function CartList({items}: CartListProps) {
   return (
-    <ScrollView>
-      <VStack space={"md"} className="p-3">
-        {items.map((item) => (
-          <CartItemCard key={item.id} item={item}/>
-        ))}
-      </VStack>
-    </ScrollView>
+    <VStack space="2xl" className="p-3">
+      {items.map((item) => (
+        <CartItemCard key={item.id} item={item}/>
+      ))}
+    </VStack>
   )
 }
 

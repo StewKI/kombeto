@@ -2,7 +2,7 @@ import {Discount} from "@/services/types";
 import {Card} from "@/components/ui/card";
 import {Text} from "@/components/ui/text";
 import {use, useMemo} from "react";
-import ColorUtil from "@/services/ui/ColorUtil";
+import ColorUtil from "@/services/general/ColorUtil";
 import {Box} from "@/components/ui/box";
 
 interface DiscountBadgeProps {
