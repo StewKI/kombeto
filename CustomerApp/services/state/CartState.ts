@@ -28,6 +28,7 @@ type CartStore = {
   addVariation: (id: number, variation: string) => void;
   removeVariation: (id: number, variation: string) => void;
   removeVariationAll: (id: number, variation: string) => void;
+  getVariationCount: (id: number, variation: string) => number;
 }
 
 
@@ -128,6 +129,13 @@ export const useCartStore = create<CartStore>()(
           return item;
         })
         set({cartItems: newItems});
+      },
+      
+      getVariationCount: (id: number, variation: string) => {
+        const items = get().cartItems.filter((item) => item.id === id);
+        if (items.length === 0) {return 0;}
+        const item = items[0];
+        return item.variation_list.filter(v => v === variation).length;
       }
     }),
     {

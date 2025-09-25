@@ -10,8 +10,11 @@ public record CategoryDto
 }
 
 
-public record CreateCategoryDto
+public record PutCategoryDto
 {
+    [Required]
+    public int Id { get; set; }
+    
     [Required]
     [StringLength(100)]
     public string Name { get; set; } = null!;

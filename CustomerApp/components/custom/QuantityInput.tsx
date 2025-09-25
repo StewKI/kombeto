@@ -3,7 +3,6 @@ import { HStack } from "@/components/ui/hstack";
 import {Button, ButtonIcon, ButtonText} from "@/components/ui/button";
 import { Text } from "@/components/ui/text"
 import {Center} from "@/components/ui/center";
-//import { Minus, Plus } from "lucide-react-native";
 
 type QuantityInputProps = {
   value: number;
@@ -23,17 +22,32 @@ export const QuantityInput = ({value, onChange, size = "md"}: QuantityInputProps
   };
 
   return (
+    <QuantityInputSimple value={value} onPlus={increase} onMinus={decrease} size={size} minValue={1}/>
+  )
+}
+
+type QuantityInputSimpleProps = {
+  value: number;
+  onPlus: () => void;
+  onMinus: () => void;
+  size?: "sm" | "md" | "lg";
+  minValue?: number;
+};
+
+export const QuantityInputSimple = ({value, onPlus, onMinus, size = "md", minValue = 0}: QuantityInputSimpleProps) => {
+
+  return (
     <HStack className="align-middle">
-      
+
       <Text size="2xl" className="align-middle px-3">{value}</Text>
 
-      <Button size={size} variant="outline" onPress={decrease} isDisabled={value <= 1}
+      <Button size={size} variant="outline" onPress={onMinus} isDisabled={value <= minValue}
               className="rounded-l-full border-r-0">
         <ButtonText size="xl">
           -
         </ButtonText>
       </Button>
-      <Button size={size} variant="outline" onPress={increase}
+      <Button size={size} variant="outline" onPress={onPlus}
               className="rounded-r-full border-l-[0.5px]">
         <ButtonText size="xl">
           +

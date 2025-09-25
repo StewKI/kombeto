@@ -54,6 +54,6 @@ app.UseAuthentication();
 app.UseAuthorization();
     
 app.MapAllEndpoints();
-app.AddDummyData();
+//app.AddDummyData();
 
 app.Run();

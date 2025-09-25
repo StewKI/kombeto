@@ -23,12 +23,29 @@ public static class OwnerProductEndpoints
         app.MapPost("/products", async (AppDbContext db, CreateProductDto dto, SearchService searchService) =>
         {
             var product = dto.MapFromDto();
+
+            
             db.Products.Add(product);
+            await db.SaveChangesAsync();
+            
+            
+            if (dto.Categories is not null)
+            {
+                foreach (var categoryId in dto.Categories)
+                {
+                    var category = await db.Categories.FindAsync(categoryId);
+                    if (category is not null)
+                    {
+                        product.Categories.Add(category);
+                    }
+                }
+            }
+
             await db.SaveChangesAsync();
             
             searchService.ResetCache();
             
-            return Results.Created($"/products/{product.Id}", product);
+            return Results.Created($"/products/{product.Id}", product.Id);
             
         }).RequireAuthorization("Owner");
         

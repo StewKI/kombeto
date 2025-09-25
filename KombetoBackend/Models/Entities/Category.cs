@@ -5,8 +5,7 @@ namespace KombetoBackend.Models.Entities;
 
 public class Category
 {
-    [Key] 
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
     public int Id { get; set; }
     
     [Required]

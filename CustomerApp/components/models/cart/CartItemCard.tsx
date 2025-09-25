@@ -12,14 +12,18 @@ import DiscountUtil from "@/services/models/discount/DiscountUtil";
 import XButton from "@/components/custom/XButton";
 import {QuantityInput} from "@/components/custom/QuantityInput";
 import {useCartStore} from "@/services/state/CartState";
+import FullView from "@/components/models/cart/QuantityView/FullView";
+import VariationsUtils from "@/services/models/product/VariationsUtils";
+import VariationAdder from "@/components/models/cart/CartAdder/VariationAdder";
+import VariationView from "@/components/models/cart/QuantityView/VariationView";
 
 interface CartItemCardProps {
   item: CartItem
 }
 
 function CartItemCard({item}: CartItemCardProps) {
-  
-  const {removeItem, updateQuantity} = useCartStore();
+    
+  const {removeItem} = useCartStore();
 
   const sortedDiscounts = useMemo(() => {
     return item.discounts.sort((a, b) => b.discount - a.discount);
@@ -35,6 +39,10 @@ function CartItemCard({item}: CartItemCardProps) {
   
   const totalPrice = useMemo(() => {
     return discountedPrice * item.quantity;
+  }, [item])
+  
+  const containsVariations = useMemo(() => {
+    return VariationsUtils.containsVariations(item);
   }, [item])
 
   return (
@@ -75,20 +83,15 @@ function CartItemCard({item}: CartItemCardProps) {
               </Text>
             )}
           </HStack>
-
         </VStack>
       </HStack>
+
+      {containsVariations ? (
+        <VariationView item={item} totalPrice={discountedPrice}/>
+      ) : (
+        <FullView item={item} totalPrice={totalPrice}/>
+      )}
       
-      <HStack className="mt-5 items-center justify-between" space={"md"}>
-        <HStack className="items-center">
-          <Text>Količina: </Text>
-          <QuantityInput size="md" value={item.quantity} onChange={(n) => {
-            updateQuantity(item.id, n);
-          }}/>
-        </HStack>
-        
-        <Text size="lg" bold>{totalPrice.toFixed(2)} RSD</Text>
-      </HStack>
     </Card>
   )
 }

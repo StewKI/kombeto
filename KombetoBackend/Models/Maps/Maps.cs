@@ -56,11 +56,11 @@ public static class Maps
         };
     }
 
-    public static Category MapFromDto(this CreateCategoryDto c)
+    public static Category MapFromDto(this PutCategoryDto c)
     {
         return new Category()
         {
-            Id = 0,
+            Id = c.Id,
             Name = c.Name,
             Color = c.Color
         };

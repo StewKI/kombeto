@@ -24,7 +24,7 @@ public static class CategoryEndpoints
 
         }).RequireAuthorization("CustomerOwner");
 
-        app.MapPost("/categories", async (CreateCategoryDto dto, AppDbContext db, IValidator<CreateCategoryDto> validator) =>
+        app.MapPut("/categories", async (PutCategoryDto dto, AppDbContext db, IValidator<PutCategoryDto> validator) =>
         {
             var validationResult = await validator.ValidateAsync(dto);
             if (!validationResult.IsValid)
@@ -32,6 +32,16 @@ public static class CategoryEndpoints
                 return Results.BadRequest(validationResult.Errors);
             }
 
+            var existingCategory = await db.Categories.FindAsync(dto.Id);
+
+            if (existingCategory is not null)
+            {
+                existingCategory.Name = dto.Name;
+                existingCategory.Color = dto.Color;
+                await db.SaveChangesAsync();
+                return Results.Ok(existingCategory.Id);
+            }
+            
             var category = dto.MapFromDto();
 
             await db.Categories.AddAsync(category);

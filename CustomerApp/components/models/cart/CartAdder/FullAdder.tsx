@@ -8,6 +8,7 @@ import {useState} from "react";
 import {useCartStore} from "@/services/state/CartState";
 import {VStack} from "@/components/ui/vstack";
 import {HStack} from "@/components/ui/hstack";
+import MessageService from "@/services/general/MessageService";
 
 interface FullAdderProps {
   product: ProductWithDiscounts
@@ -21,7 +22,7 @@ function FullAdder({product}: FullAdderProps) {
 
   function handleAdd() {
     addProductToCart(product, quantity);
-    // TODO: message
+    MessageService.Show(`Dodat ${quantity} ${product.name} u korpu`);
   }
 
 

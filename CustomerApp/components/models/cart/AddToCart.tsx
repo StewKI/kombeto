@@ -58,6 +58,7 @@ function AddToCart() {
             source={productSafe.imageUrl}
             alt={productSafe.name}
             size="none"
+            resizeMode="contain"
             borderRadius={12}
             className="aspect-[1/1] w-full mb-3"
           />

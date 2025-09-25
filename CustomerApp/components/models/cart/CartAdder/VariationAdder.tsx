@@ -8,6 +8,9 @@ import {QuantityInput} from "@/components/custom/QuantityInput";
 import {Button, ButtonText} from "@/components/ui/button";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {useCartStore} from "@/services/state/CartState";
+import {Card} from "@/components/ui/card";
+import MessageService from "@/services/general/MessageService";
+import {Heading} from "@/components/ui/heading";
 
 interface VariationAdderProps {
   product: ProductWithDiscounts
@@ -20,49 +23,36 @@ function VariationAdder({product}: VariationAdderProps) {
   const variations = useMemo(() => {
     return VariationsUtils.getVariations(product);
   }, [product])
-
-
-/* //nije za ovde
-  const [quantities, setQuantities] = useState<number[]>([]);
-  useEffect(() => {
-    const newQuantities = new Array<number>(variations.length).fill(1);
-    setQuantities(newQuantities);
-  }, [variations]);
-  
-  const setQuantity = (index: number, n: number) => {
-    setQuantities((prevState) => {
-      const newState = [...prevState];
-      newState[index] = n;
-      return newState;
-    })
-  }*/
   
   const handleAdd = (index: number) => {
     addProductToCart(product, 1);
     addVariation(product.id, variations[index]);
-    // TODO: message
+    MessageService.Show(`Dodat ${variations[index]} ${product.name} u korpu`);
   }
   
   return (
-    <VStack>
+    <VStack className="mt-4">
+      <Heading className="mb-2">Opcije:</Heading>
       {variations.map((variation, index) => (
-        <HStack key={index}>
-          <Text>
-            {variation}
-          </Text>
-          <Button
-            className={"h-[30px] mb-5 rounded-lg"}
-            onPress={() => handleAdd(index)}
-          >
-            <ButtonText>Dodaj</ButtonText>
-            <FontAwesome
-              name="shopping-cart"
-              size={20}
-              color={"white"}
-              className="ml-2"
-            />
-          </Button>
-        </HStack>
+          <Card key={index} variant="filled" size="sm" className="mb-4">
+              <HStack className="justify-between">
+                  <Text className="align-middle">
+                      {variation}
+                  </Text>
+                  <Button
+                      className={"h-[40px] rounded-lg"}
+                      onPress={() => handleAdd(index)}
+                  >
+                      <ButtonText>Dodaj</ButtonText>
+                      <FontAwesome
+                          name="shopping-cart"
+                          size={20}
+                          color={"white"}
+                          className="ml-2"
+                      />
+                  </Button>
+              </HStack>
+          </Card>
       ))}
     </VStack>
   )

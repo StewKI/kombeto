@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace KombetoBackend.Models.DTOs.Validators;
 
-public class CreateCategoryDtoValidator : AbstractValidator<CreateCategoryDto>
+public class PutCategoryDtoValidator : AbstractValidator<PutCategoryDto>
 {
-    public CreateCategoryDtoValidator()
+    public PutCategoryDtoValidator()
     {
         RuleFor(x => x.Name)
             .MaximumLength(100);
