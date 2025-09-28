@@ -23,6 +23,7 @@ public class SearchService
         {
             _cachedProducts = await db.Products
                 .Include(p => p.Discounts)
+                .Include(p => p.Categories)
                 .ToListAsync();
         }
         return _cachedProducts;

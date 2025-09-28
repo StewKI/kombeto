@@ -2,7 +2,7 @@ import {Text} from "@/components/ui/text";
 import {useCustomerStore} from "@/services/state/CustomerState";
 import {useEffect, useState} from "react";
 import CustomerBackend from "@/services/models/customer/CustomerBackend";
-import {FullScreenLoader} from "@/components/custom/FullScreenLoader";
+import {FullScreenLoader} from "@/components/custom/loader/FullScreenLoader";
 import CustomerCard from "@/components/models/customer/CustomerCard";
 
 

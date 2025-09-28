@@ -1,5 +1,5 @@
 
-import {create} from "zustand/index";
+import {create} from "zustand";
 import {Customer} from "@/services/types";
 
 

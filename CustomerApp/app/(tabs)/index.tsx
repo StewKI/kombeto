@@ -8,7 +8,7 @@ import {Text} from "@/components/ui/text";
 import {Box} from "@/components/ui/box";
 import ProductSection from "@/components/models/product/ProductSection";
 import {ScrollView} from "react-native";
-import {FullScreenLoader} from "@/components/custom/FullScreenLoader";
+import {FullScreenLoader} from "@/components/custom/loader/FullScreenLoader";
 
 
 export default function TabOneScreen() {

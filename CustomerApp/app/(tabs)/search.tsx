@@ -1,21 +1,28 @@
 import {Text} from "@/components/ui/text";
 import {useCategoriesStore} from "@/services/state/CategoriesState";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import CategoryBack from "@/services/models/category/CategoryBack";
 import CategoryList from "@/components/models/category/CategoryList";
+import {useSearchTabStore} from "@/services/state/SearchTabState";
+import ProductSearchView from "@/components/models/search/ProductSearchView";
 
 
 function SearchTab() {
   
-  const { categories, setCategories } = useCategoriesStore();
-
-  useEffect(() => {
-    CategoryBack.loadAll().then((categories) => setCategories(categories));
-  }, []);
+  const { selectedCategory, setSelectedCategory } = useSearchTabStore();
+  
   
   return (
     <>
-      <CategoryList categories={categories}/>
+      {selectedCategory ? (
+        <ProductSearchView />
+      ) : (
+        <CategoryList
+          onSelect={(category) => {
+            setSelectedCategory(category);
+          }}
+        />
+      )}
     </>
   )
 }

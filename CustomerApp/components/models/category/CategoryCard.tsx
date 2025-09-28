@@ -9,18 +9,19 @@ import ColorUtil from "@/services/general/ColorUtil";
 
 interface CategoryCardProps {
   category: Category;
+  onPress: (category: Category) => void;
 }
 
-function CategoryCard({ category }: CategoryCardProps) {
+function CategoryCard({ category, onPress }: CategoryCardProps) {
   
   //const textColor = ColorUtil.getTextColor(category.color);
   
   return (
-    <Pressable>
+    <Pressable onPress={() => onPress(category)}>
       <LinearGradient
-        colors={["#ffffff", category.color]}  // left → right
-        start={{ x: 1.6, y: 0 }}
-        end={{ x: -0.5, y: 0 }}
+        colors={[category.color, "#ffffff"]}  // left → right
+        start={{ x: -0.6, y: 0 }}
+        end={{ x: 1.5, y: 0 }}
         style={{ 
           flex: 1, 
           justifyContent: "center", 

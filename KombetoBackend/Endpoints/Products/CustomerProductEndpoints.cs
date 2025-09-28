@@ -29,13 +29,13 @@ public static class CustomerProductEndpoints
         
         
         app.MapGet("/products", async (SearchService searchService, string? search, int page = 1,
-            int pageSize = 20, string? sortBy = "relevance") =>
+            int pageSize = 20, string? sortBy = "relevance", int? category = null) =>
         {
             search ??= "";
 
             // Searching
             var filteredWithScores = await searchService.Search(search);
-
+            
             // Sorting
             filteredWithScores = sortBy?.ToLower() switch
             {
@@ -45,6 +45,16 @@ public static class CustomerProductEndpoints
                 _ => filteredWithScores.OrderBy(ps => ps.Score).ToList()
             };
 
+            // Categories
+            if (category is not null)
+            {
+                filteredWithScores = filteredWithScores.Where(p =>
+                {
+                    var exist = p.Product.Categories.FirstOrDefault(c => c.Id == category);
+                    return exist is not null;
+                }).ToList();
+            }
+            
             // Pagination
             var paged = filteredWithScores
                 .Skip((page - 1) * pageSize)
