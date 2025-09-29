@@ -11,11 +11,12 @@ import {Heading} from "@/components/ui/heading";
 import DiscountUtil from "@/services/models/discount/DiscountUtil";
 import XButton from "@/components/custom/XButton";
 import {QuantityInput} from "@/components/custom/QuantityInput";
-import {useCartStore} from "@/services/state/CartState";
+import {useCartStore, useProductToAddStore} from "@/services/state/CartState";
 import FullView from "@/components/models/cart/QuantityView/FullView";
 import VariationsUtils from "@/services/models/product/VariationsUtils";
 import VariationAdder from "@/components/models/cart/CartAdder/VariationAdder";
 import VariationView from "@/components/models/cart/QuantityView/VariationView";
+import {Pressable} from "@/components/ui/pressable";
 
 interface CartItemCardProps {
   item: CartItem
@@ -24,6 +25,7 @@ interface CartItemCardProps {
 function CartItemCard({item}: CartItemCardProps) {
     
   const {removeItem} = useCartStore();
+  const {setProduct} = useProductToAddStore();
 
   const sortedDiscounts = useMemo(() => {
     return item.discounts.sort((a, b) => b.discount - a.discount);
@@ -53,9 +55,16 @@ function CartItemCard({item}: CartItemCardProps) {
       </Box>
       
       <HStack>
-        <Box className="w-32 h-32 mr-3">
-          <ProductImage product={item}/>
-        </Box>
+        <Pressable
+          onPress={() => setProduct(item)}
+        >
+          {({pressed}) => (
+            <Box className="w-32 h-32 mr-3" style={{opacity: pressed ? 0.5 : 1}}>
+              <ProductImage product={item}/>
+            </Box>
+          )}
+        </Pressable>
+        
         <VStack space="sm">
           
           <Heading style={{fontSize: 14, maxWidth: 140}}>

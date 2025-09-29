@@ -9,6 +9,7 @@ import {useCartStore} from "@/services/state/CartState";
 import {VStack} from "@/components/ui/vstack";
 import {HStack} from "@/components/ui/hstack";
 import MessageService from "@/services/general/MessageService";
+import {useMsgStore} from "@/services/state/MsgState";
 
 interface FullAdderProps {
   product: ProductWithDiscounts
@@ -19,10 +20,20 @@ function FullAdder({product}: FullAdderProps) {
   const [quantity, setQuantity] = useState(1);
 
   const {addProductToCart} = useCartStore();
+  
+  const {displayMsg} = useMsgStore();
 
   function handleAdd() {
     addProductToCart(product, quantity);
-    MessageService.Show(`Dodat ${quantity} ${product.name} u korpu`);
+    displayMsg("Uspešno", (
+      <>
+        <Text>Dodato u korpu:</Text>
+        <HStack className="gap-1 flex-wrap">
+          <Text className="italic">{quantity}kom</Text>
+          <Text bold> {product.name}</Text>
+        </HStack>
+      </>
+    ))
   }
 
 

@@ -88,5 +88,25 @@ public static class Maps
             Variations = dto.Variations
         };
     }
-    
+
+    public static Order MapFromDto(this CreateOrderDto dto)
+    {
+        return new Order
+        {
+            CustomerId = dto.CustomerId,
+            Note = dto.Note
+        };
+    }
+
+    public static OrderItem MapFromDto(this CreateOrderItemDto dto, int orderId)
+    {
+        return new OrderItem
+        {
+            OrderId = orderId,
+            ProductId = dto.ProductId,
+            Quantity = dto.Quantity,
+            Price = dto.Price,
+            Note = dto.Note
+        };
+    }
 }

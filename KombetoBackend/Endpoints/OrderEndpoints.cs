@@ -4,6 +4,7 @@ using KombetoBackend.Models.Data;
 using KombetoBackend.Models.DTOs;
 using KombetoBackend.Models.DTOs.Validators;
 using KombetoBackend.Models.Entities;
+using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
 
 namespace KombetoBackend.Endpoints;
@@ -16,39 +17,24 @@ public static class OrderEndpoints
             CreateOrderDto orderDto,
             AppDbContext db,
             IValidator<CreateOrderDto> orderValidator,
-            IValidator<CreateOrderItemDto> itemValidator,
             ClaimsPrincipal claims) =>
         {
             var validationResult = await orderValidator.ValidateAsync(orderDto);
             if (!validationResult.IsValid) return Results.BadRequest(validationResult.Errors);
-
-            foreach (var itemDto in orderDto.Items)
-            {
-                var itemValidationResult = await itemValidator.ValidateAsync(itemDto);
-                if (!itemValidationResult.IsValid) return Results.BadRequest(itemValidationResult.Errors);
-            }
             
-            if (!SecurityService.CheckIdFromClaims(claims, orderDto.CustomerId, out var result)) return result!;
+            //if (!SecurityService.CheckIdFromClaims(claims, orderDto.CustomerId, out var result)) return result!;
 
             var customer = await db.Customers.FindAsync(orderDto.CustomerId);
             if (customer is null) return Results.NotFound();
 
-            var newOrder = new Order
-            {
-                CustomerId = orderDto.CustomerId
-            };
+            var newOrder = orderDto.MapFromDto();
 
             await db.Orders.AddAsync(newOrder);
             await db.SaveChangesAsync();
 
             foreach (var itemDto in orderDto.Items)
             {
-                var orderItem = new OrderItem
-                {
-                    OrderId = newOrder.Id,
-                    ProductId = itemDto.ProductId,
-                    Quantity = itemDto.Quantity
-                };
+                var orderItem = itemDto.MapFromDto(newOrder.Id);
                 await db.OrderItems.AddAsync(orderItem);
             }
 

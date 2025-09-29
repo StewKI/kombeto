@@ -29,5 +29,14 @@ public class CreateOrderItemDtoValidator : AbstractValidator<CreateOrderItemDto>
         RuleFor(x => x.Quantity)
             .GreaterThan(0)
             .WithMessage("Quantity must be at least 1");
+
+        RuleFor(x => x.Price)
+            .GreaterThanOrEqualTo(0.00M)
+            .WithMessage("Price must be positive number");
+
+        RuleFor(x => x.Note)
+            .MaximumLength(128)
+            .WithMessage("Note longer than 128");
+
     }
 }

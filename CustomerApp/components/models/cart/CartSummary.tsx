@@ -7,6 +7,7 @@ import {HStack} from "@/components/ui/hstack";
 import {Text} from "@/components/ui/text";
 import {Button, ButtonText} from "@/components/ui/button";
 import {CartCountSum} from "@/services/state/CartState";
+import {router} from "expo-router";
 
 interface CartSummaryProps {
   cartItems: CartItem[];
@@ -39,7 +40,7 @@ function CartSummary({cartItems}: CartSummaryProps) {
             </Text>
           </HStack>
         </HStack>
-        <Button className="h-14">
+        <Button className="h-14" onPress={() => router.push("/order")}>
           <ButtonText>
             Idi na kasu
           </ButtonText>

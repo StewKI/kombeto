@@ -11,6 +11,7 @@ import {useCartStore} from "@/services/state/CartState";
 import {Card} from "@/components/ui/card";
 import MessageService from "@/services/general/MessageService";
 import {Heading} from "@/components/ui/heading";
+import {useMsgStore} from "@/services/state/MsgState";
 
 interface VariationAdderProps {
   product: ProductWithDiscounts
@@ -20,6 +21,8 @@ function VariationAdder({product}: VariationAdderProps) {
   
   const { addProductToCart, addVariation } = useCartStore();
   
+  const {displayMsg} = useMsgStore();
+  
   const variations = useMemo(() => {
     return VariationsUtils.getVariations(product);
   }, [product])
@@ -27,7 +30,15 @@ function VariationAdder({product}: VariationAdderProps) {
   const handleAdd = (index: number) => {
     addProductToCart(product, 1);
     addVariation(product.id, variations[index]);
-    MessageService.Show(`Dodat ${variations[index]} ${product.name} u korpu`);
+    displayMsg("Uspešno", (
+      <>
+        <Text>Dodato u korpu:</Text>
+        <HStack className="gap-1 flex-wrap">
+          <Text className="italic" bold>{variations[index]}</Text>
+          <Text bold>{product.name}</Text>
+        </HStack>
+      </>
+    ))
   }
   
   return (

@@ -19,6 +19,11 @@ public class Order
     
     public OrderStatus Status { get; set; } = OrderStatus.Received;
 
+    [MaxLength(500)]
+    public string? Note { get; set; } = null;
+    
+    
+
     public List<OrderItem> Items { get; set; } = new();
 }
 
