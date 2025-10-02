@@ -4,7 +4,7 @@ import {VStack} from "@/components/ui/vstack";
 import {useCartStore} from "@/services/state/CartState";
 import OrderItemsOverview from "@/components/models/order/OrderItemsOverview";
 import {Heading} from "@/components/ui/heading";
-import {KeyboardAvoidingView, Platform, ScrollView} from "react-native";
+import {ScrollView} from "react-native";
 import {useMemo, useState} from "react";
 import {useCustomerStore} from "@/services/state/CustomerState";
 import {Card} from "@/components/ui/card";
@@ -21,6 +21,7 @@ import OrderBackend from "@/services/models/order/OrderBackend";
 import {useMsgStore} from "@/services/state/MsgState";
 import MsgDialog from "@/components/custom/diaolog/MsgDialog";
 import {router} from "expo-router";
+import KeyboardAware from "@/components/custom/KeyboardAware";
 
 
 function PlaceOrderScreen() {
@@ -93,11 +94,7 @@ function PlaceOrderScreen() {
         </>
       </YesNoDialog>
       
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={80} // adjust if header/nav overlaps
-      >
+      <KeyboardAware>
         <VStack className="px-4 flex-1">
           <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
@@ -123,7 +120,7 @@ function PlaceOrderScreen() {
 
           </ScrollView>
         </VStack>
-      </KeyboardAvoidingView>
+      </KeyboardAware>
     </>
   )
 }

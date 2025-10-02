@@ -13,11 +13,14 @@ import {Pre} from "@expo/html-elements";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import ColorUtil from "@/services/general/ColorUtil";
 import {BackHandler} from "react-native";
+import SearchButton from "@/components/models/search/SearchButton";
+import {useSearchStore} from "@/services/state/SearchState";
 
 
 function SearchTopBar() {
   
   const {selectedCategory, setSelectedCategory} = useSearchTabStore();
+  const {setSearchQuery} = useSearchStore();
   
   const category: Category = useMemo<Category>(() => {
     if (!selectedCategory) {
@@ -33,10 +36,15 @@ function SearchTopBar() {
     return selectedCategory;
     
   }, [selectedCategory]);
+  
+  const onBack = () => {
+    setSearchQuery(undefined);
+    setSelectedCategory(undefined);
+  }
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", () => {
-      setSelectedCategory(undefined);
+      onBack();
       return true;
     })
   }, []);
@@ -55,7 +63,7 @@ function SearchTopBar() {
     >
       <HStack className="items-center justify-between">
         <Pressable
-          onPress={() => setSelectedCategory(undefined)}
+          onPress={onBack}
         >
           {({pressed}) => (
 
@@ -73,12 +81,10 @@ function SearchTopBar() {
         >
           {category.name}
         </Text>
-        <RightButton onClick={() => {}}>
-          <FontAwesome name="search" size={20} color="black" />
-        </RightButton>
-        <RightButton onClick={() => {}}>
-          <FontAwesome name="sort-amount-asc" size={20} color="black" />
-        </RightButton>
+        
+        <SearchButton/>
+        
+        
       </HStack>
     </LinearGradient>
   )
@@ -87,27 +93,3 @@ function SearchTopBar() {
 export default SearchTopBar;
 
 
-interface RightButtonProps{
-  onClick: () => void;
-  className?: string,
-  children?: React.ReactNode;
-}
-
-function RightButton({onClick, children, className}: RightButtonProps) {
-  
-  return (
-    <Pressable>
-      {({pressed}) => (
-        <Box
-          className="px-4 h-12 rounded-lg items-center flex-row ml-2"
-          style={{
-            backgroundColor: pressed? "gray" : "white",
-            borderWidth: 1
-          }}
-        >
-          {children}
-        </Box>
-      )}
-    </Pressable>
-  )
-}

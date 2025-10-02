@@ -7,35 +7,27 @@ type SearchStore = {
   
   // query data
   search?: string;
-  category?: number;
   
-  setQueryData: (search?: string, category?: number) => void;
+  setSearchQuery: (search?: string) => void;
   
+  showSearchBox: boolean;
+  setShowSearchBox: (show: boolean) => void;
   
-  // page data
-  page: ProductsPage
-  setPageData: (page: ProductsPage) => void;
   
 }
 
 export const useSearchStore = create<SearchStore>((set) => ({
   
   search: undefined,
-  category: undefined,
 
-  setQueryData: (search?: string, category?: number) => {
-    set({search, category})
+  setSearchQuery: (search?: string) => {
+    set({search})
   },
-
-  page: {
-    totalItems: 0,
-    page: 1,
-    pageSize: 20,
-    items: []
-  },
-
-  setPageData: (page: ProductsPage) => {
-    set({page})
-  }
   
+  showSearchBox: false,
+  
+  setShowSearchBox: (show: boolean) => {
+    set({showSearchBox: show})
+  }
+
 }));

@@ -7,6 +7,8 @@ import {VStack} from "@/components/ui/vstack";
 import {Text} from "@/components/ui/text";
 import {Heading} from "@/components/ui/heading";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import {useMemo} from "react";
+import CustomerUtil from "@/services/models/customer/CustomerUtil";
 
 interface CustomerCardProps {
   customer: Customer
@@ -14,6 +16,7 @@ interface CustomerCardProps {
 
 function CustomerCard({customer}: CustomerCardProps) {
   
+  const hasDiscount = useMemo(() => CustomerUtil.haveDiscount(customer), [customer]);
   
   return (
     <Card
@@ -33,10 +36,12 @@ function CustomerCard({customer}: CustomerCardProps) {
               <FontAwesome name="phone" size={24} color="black" />
               <Text>  {customer.phone}</Text>
             </HStack>
-            <HStack>
-              <Text className={"align-middle"}>Moj popust: </Text>
-              <Text size={"lg"} bold>-{customer.discount}%</Text>
-            </HStack>
+            {hasDiscount && (
+              <HStack>
+                <Text className={"align-middle"}>Moj popust: </Text>
+                <Text size={"lg"} bold>-{customer.discount}%</Text>
+              </HStack>
+            )}
           </VStack>
         </Box>
       </HStack>

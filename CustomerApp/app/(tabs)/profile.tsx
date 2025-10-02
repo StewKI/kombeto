@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 import CustomerBackend from "@/services/models/customer/CustomerBackend";
 import {FullScreenLoader} from "@/components/custom/loader/FullScreenLoader";
 import CustomerCard from "@/components/models/customer/CustomerCard";
+import {Button, ButtonText} from "@/components/ui/button";
+import {VStack} from "@/components/ui/vstack";
 
 
 function ProfileTab() {
@@ -38,9 +40,18 @@ function ProfileTab() {
       {loading && <FullScreenLoader/>}
       {error && <Text>{error}</Text>}
 
-      {customer && (
-        <CustomerCard customer={customer}/>
-      )}
+      <VStack className="">
+
+        {customer && (
+          <CustomerCard customer={customer}/>
+        )}
+
+        <Button className="h-16 my-5 mx-4" onPress={() => {}}>
+          <ButtonText>Moje porudžbine</ButtonText>
+        </Button>
+        
+      </VStack>
+      
       
     </>
   );

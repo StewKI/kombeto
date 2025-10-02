@@ -41,6 +41,15 @@ function FastProductGrid({ products, loading, hasMore, onLoadMore }: FastProduct
         </Box>
       ) : null}
       showsVerticalScrollIndicator={false}
+      removeClippedSubviews
+      windowSize={5}               // only render ~2.5 screens above & below
+      maxToRenderPerBatch={10}     // render at most 10 per batch
+      updateCellsBatchingPeriod={50} // ms between render batches
+      getItemLayout={(data, index) => ({
+        length: 250, // approximate item height (optimizes scroll)
+        offset: 250 * index,
+        index,
+      })}
     />
   );
 }

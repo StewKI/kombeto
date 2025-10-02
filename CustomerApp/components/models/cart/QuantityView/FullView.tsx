@@ -3,6 +3,7 @@ import {useCartStore} from "@/services/state/CartState";
 import {CartItem} from "@/services/types";
 import {HStack} from "@/components/ui/hstack";
 import {Text} from "@/components/ui/text";
+import {useMsgStore} from "@/services/state/MsgState";
 
 
 interface FullViewProps {
@@ -12,7 +13,36 @@ interface FullViewProps {
 
 function FullView({item, totalPrice}: FullViewProps) {
 
-  const {removeItem, updateQuantity} = useCartStore();
+  const {updateQuantity} = useCartStore();
+  
+  const {displayMsg} = useMsgStore();
+  
+  const notifyIncreased = () => {
+    displayMsg("Količina povećana", (
+      <Text>{item.name}</Text>
+    ))
+  }
+
+  const notifyDecreased = () => {
+    displayMsg("Količina smanjena", (
+      <Text>{item.name}</Text>
+    ))
+  }
+  
+  const update = (newQuantity: number) => {
+    
+    if (newQuantity > item.quantity) {
+      notifyIncreased();
+    } else if (newQuantity < item.quantity) {
+      notifyDecreased();
+    }
+    
+    if (newQuantity < 1) {
+      newQuantity = 1;
+    }
+    
+    updateQuantity(item.id, newQuantity);
+  }
 
   return (
     <>
@@ -20,7 +50,7 @@ function FullView({item, totalPrice}: FullViewProps) {
         <HStack className="items-center">
           <Text>Količina: </Text>
           <QuantityInput size="md" value={item.quantity} onChange={(n) => {
-            updateQuantity(item.id, n);
+            update(n)
           }}/>
         </HStack>
 

@@ -20,11 +20,11 @@ import {Pressable} from "@/components/ui/pressable";
 
 interface CartItemCardProps {
   item: CartItem
+  onRemove: (cartItem: CartItem) => void;
 }
 
-function CartItemCard({item}: CartItemCardProps) {
+function CartItemCard({item, onRemove}: CartItemCardProps) {
     
-  const {removeItem} = useCartStore();
   const {setProduct} = useProductToAddStore();
 
   const sortedDiscounts = useMemo(() => {
@@ -51,7 +51,9 @@ function CartItemCard({item}: CartItemCardProps) {
     <Card size={"sm"} className="border-2 rounded-2xl">
       
       <Box className="absolute top-2 right-2" style={{zIndex: 10}}>
-        <XButton onClick={() => removeItem(item.id)}/>
+        <XButton onClick={() => {
+          onRemove(item);
+        }}/>
       </Box>
       
       <HStack>

@@ -5,6 +5,7 @@ import {HStack} from "@/components/ui/hstack";
 import {Text} from "@/components/ui/text";
 import {useEffect, useMemo, useState} from "react";
 import VariationsUtils from "@/services/models/product/VariationsUtils";
+import {useMsgStore} from "@/services/state/MsgState";
 
 
 interface FullViewProps {
@@ -32,6 +33,32 @@ function VariationView({item, totalPrice}: FullViewProps) {
     return arr;
   }, [cartItems, variations])
 
+  const {displayMsg} = useMsgStore();
+
+  const notifyIncreased = (variation: string) => {
+    displayMsg("Količina povećana", (
+      <>
+        <Text>{item.name}</Text>
+        <HStack className="mt-1">
+          <Text className="italic mr-2">Opcija:</Text>
+          <Text bold>{variation}</Text>
+        </HStack>
+      </>
+    ))
+  }
+
+  const notifyDecreased = (variation: string) => {
+    displayMsg("Količina smanjena", (
+      <>
+        <Text>{item.name}</Text>
+        <HStack className="mt-1">
+          <Text className="italic mr-2">Opcija:</Text>
+          <Text bold>{variation}</Text>
+        </HStack>
+      </>
+    ))
+  }
+
   return (
     <>
       {variations.map((variation, index) => (
@@ -42,10 +69,12 @@ function VariationView({item, totalPrice}: FullViewProps) {
               size="md" 
               value={quantities[index]}
               onPlus={() => {
+                notifyIncreased(variation);
                 addProductToCart(item, 1);
                 addVariation(item.id, variation);
               }}
               onMinus={() => {
+                notifyDecreased(variation);
                 addProductToCart(item, -1);
                 removeVariation(item.id, variation);
               }}

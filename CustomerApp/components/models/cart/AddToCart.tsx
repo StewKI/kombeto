@@ -12,11 +12,15 @@ import XButton from "@/components/custom/XButton";
 import FullAdder from "@/components/models/cart/CartAdder/FullAdder";
 import VariationsUtils from "@/services/models/product/VariationsUtils";
 import VariationAdder from "@/components/models/cart/CartAdder/VariationAdder";
+import {Box} from "@/components/ui/box";
 
 function AddToCart() {
   
-  const {product, resetProduct} = useProductToAddStore();
   
+  const product = useProductToAddStore(state => state.product);
+  const resetProduct = useProductToAddStore(state => state.resetProduct);
+
+
   const productSafe = useMemo<ProductWithDiscounts>(() => {
     if (product) return product;
     return {
@@ -75,6 +79,8 @@ function AddToCart() {
           ) : (
             <FullAdder product={productSafe}/>
           )}
+          
+          <Box className="h-4"/>
         </DrawerBody>
         <DrawerFooter>
           

@@ -6,7 +6,7 @@ import { Image } from "@/components/ui/image"
 import { Text } from "@/components/ui/text"
 import { VStack } from "@/components/ui/vstack"
 import {useProductToAddStore} from "@/services/state/CartState";
-import {useMemo} from "react";
+import React, {useMemo} from "react";
 import DiscountUtil from "@/services/models/discount/DiscountUtil";
 import ProductImageBadges from "@/components/models/product/ProductImageBadges";
 import {Pressable} from "@/components/ui/pressable";
@@ -18,9 +18,9 @@ interface ProductCardProps {
   product: ProductWithDiscounts;
 }
 
-function ProductCard({product}: ProductCardProps) {
-  
-  const {setProduct} = useProductToAddStore();
+function ProductCard({ product }: ProductCardProps) {
+
+  const setProduct = useProductToAddStore(state => state.setProduct);
   
   const isDiscounted = useMemo(() => {
     return product.discounts.length > 0;
@@ -88,5 +88,6 @@ function ProductCard({product}: ProductCardProps) {
     </Pressable>
   );
 }
+
 
 export default ProductCard;
