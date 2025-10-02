@@ -53,6 +53,7 @@ function RootLayoutNav() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="cart" options={{ presentation: 'modal', headerTitle: 'Korpa' }} />
           <Stack.Screen name="order" options={{ presentation: 'modal', headerTitle: 'Kasa' }} />
+          <Stack.Screen name="my_orders" options={{ presentation: 'modal', headerTitle: 'Moje porudžbine' }} />
         </Stack>
       </>
     </GluestackUIProvider>

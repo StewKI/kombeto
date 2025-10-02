@@ -9,6 +9,10 @@ public class CreateOrderDtoValidator : AbstractValidator<CreateOrderDto>
         RuleFor(x => x.CustomerId)
             .GreaterThan(0)
             .WithMessage("CustomerId must be greater than 0");
+        
+        RuleFor(x => x.Price)
+            .GreaterThanOrEqualTo(0.00M)
+            .WithMessage("Price must be positive number");
 
         RuleFor(x => x.Items)
             .NotEmpty()

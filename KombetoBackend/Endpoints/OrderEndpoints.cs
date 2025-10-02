@@ -6,6 +6,7 @@ using KombetoBackend.Models.DTOs.Validators;
 using KombetoBackend.Models.Entities;
 using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace KombetoBackend.Endpoints;
 
@@ -13,6 +14,26 @@ public static class OrderEndpoints
 {
     public static void MapOrderEndpoints(this WebApplication app)
     {
+        app.MapGet("/orders", async (
+            int? customerId,
+            AppDbContext db) =>
+        {
+            IQueryable<Order> ordersSet = db.Orders.Include(o => o.Items);
+
+            if (customerId is not null)
+            {
+                ordersSet = ordersSet.Where(o => o.CustomerId == customerId);
+            }
+
+            var orders = await ordersSet.ToListAsync();
+
+            var ordersDtos = orders.Select(o => o.MapDto()).ToList();
+
+            return Results.Ok(ordersDtos);
+
+        }).RequireAuthorization("CustomerOwner");
+        
+        
         app.MapPost("/orders", async (
             CreateOrderDto orderDto,
             AppDbContext db,
@@ -43,5 +64,7 @@ public static class OrderEndpoints
             return Results.Created($"/orders/{newOrder.Id}", new { Id = newOrder.Id });
 
         }).RequireAuthorization("Customer");
+        
     }
+    
 }

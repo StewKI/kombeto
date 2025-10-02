@@ -3,11 +3,16 @@ import VariationsUtils from "@/services/models/product/VariationsUtils";
 import DiscountUtil from "@/services/models/discount/DiscountUtil";
 import CartUtil from "@/services/models/cart/CartUtil";
 import ApiService from "@/services/ApiService";
+import {Order} from "@/services/types";
 
 
 export default class OrderBackend {
   
-  public static async Place(customerId: number, cartItems: CartItem[], note?: string, ) {
+  public static async GetOrders(customerId: number) {
+    return await ApiService.get<Order[]>(`orders?customerId=${customerId}`);
+  }
+  
+  public static async Place(customerId: number, cartItems: CartItem[], totalPrice: number, note?: string) {
     
     const items = cartItems.map((item) => {
       const finalPrice = DiscountUtil.applyMany(item.price, item.discounts)
@@ -20,17 +25,11 @@ export default class OrderBackend {
       }
     })
     
-    const totalPrice = CartUtil.TotalSum(cartItems);
-    
-    console.log({
-      customerId: customerId,
-      note: note,
-      items: items
-    })
     
     await ApiService.post("orders", {
       customerId: customerId,
       note: note,
+      price: totalPrice,
       items: items
     })
     

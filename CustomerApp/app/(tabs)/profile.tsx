@@ -6,6 +6,7 @@ import {FullScreenLoader} from "@/components/custom/loader/FullScreenLoader";
 import CustomerCard from "@/components/models/customer/CustomerCard";
 import {Button, ButtonText} from "@/components/ui/button";
 import {VStack} from "@/components/ui/vstack";
+import {router} from "expo-router";
 
 
 function ProfileTab() {
@@ -46,7 +47,7 @@ function ProfileTab() {
           <CustomerCard customer={customer}/>
         )}
 
-        <Button className="h-16 my-5 mx-4" onPress={() => {}}>
+        <Button className="h-16 my-5 mx-4" onPress={() => {router.push("/my_orders")}}>
           <ButtonText>Moje porudžbine</ButtonText>
         </Button>
         

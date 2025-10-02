@@ -94,6 +94,7 @@ public static class Maps
         return new Order
         {
             CustomerId = dto.CustomerId,
+            Price = dto.Price,
             Note = dto.Note
         };
     }
@@ -107,6 +108,32 @@ public static class Maps
             Quantity = dto.Quantity,
             Price = dto.Price,
             Note = dto.Note
+        };
+    }
+
+    public static OrderDto MapDto(this Order o)
+    {
+        return new OrderDto
+        {
+            Id = o.Id,
+            CustomerId = o.CustomerId,
+            Note = o.Note,
+            Price = o.Price,
+            Items = o.Items.Select(o => o.MapDto()).ToList(),
+            Status = o.Status,
+            CreatedAt = o.CreatedAt
+        };
+    }
+
+    public static OrderItemDto MapDto(this OrderItem o)
+    {
+        return new OrderItemDto
+        {
+            Id = o.Id,
+            ProductId = o.ProductId,
+            Quantity = o.Quantity,
+            Price = o.Price,
+            Note = o.Note
         };
     }
 }

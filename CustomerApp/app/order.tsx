@@ -56,7 +56,7 @@ function PlaceOrderScreen() {
     setShowDialog(false);
     setLoading(true);
     try {
-      await OrderBackend.Place(customer.id, cartItems, note);
+      await OrderBackend.Place(customer.id, cartItems, totalPrice, note);
       //success
       setShowSuccess(true);
     }

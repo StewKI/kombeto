@@ -48,3 +48,20 @@ export type Category = {
   name: string,
   color: string,
 }
+
+export type OrderItem = {
+  id: number,
+  productId: number,
+  quantity: number,
+  price: number,
+  note?: string,
+}
+
+export type Order = {
+  id: number,
+  items: OrderItem[],
+  price: number,
+  createdAt: string,
+  note: string,
+  status: number,
+}

@@ -22,7 +22,8 @@ public class Order
     [MaxLength(500)]
     public string? Note { get; set; } = null;
     
-    
+    [Precision(18, 2)]
+    public decimal Price { get; set; }
 
     public List<OrderItem> Items { get; set; } = new();
 }
