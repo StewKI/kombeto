@@ -38,8 +38,8 @@ function SearchTopBar() {
   }, [selectedCategory]);
   
   const onBack = () => {
-    setSearchQuery(undefined);
     setSelectedCategory(undefined);
+    setSearchQuery(undefined);
   }
 
   useEffect(() => {
