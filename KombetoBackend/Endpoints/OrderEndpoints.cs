@@ -16,9 +16,14 @@ public static class OrderEndpoints
     {
         app.MapGet("/orders", async (
             int? customerId,
+            string? includeCustomer,
+            string? includeItems,
             AppDbContext db) =>
         {
-            IQueryable<Order> ordersSet = db.Orders.Include(o => o.Items);
+            IQueryable<Order> ordersSet = db.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Items)
+                .ThenInclude(i => i.Product);
 
             if (customerId is not null)
             {
@@ -27,7 +32,27 @@ public static class OrderEndpoints
 
             var orders = await ordersSet.ToListAsync();
 
-            var ordersDtos = orders.Select(o => o.MapDto()).ToList();
+            var ordersDtos = orders.Select(o =>
+            {
+                var dto = o.MapDto();
+                if (Check(includeCustomer))
+                {
+                    dto.Customer = o.Customer.MapDto();
+                }
+                if (Check(includeItems))
+                {
+                    dto.Items = o.Items.Select(i =>
+                    {
+                        var iDto = i.MapDto();
+                        iDto.Product = i.Product.MapDto();
+                        return iDto;
+                    }).ToList();
+                }
+
+                return dto;
+            }).ToList();
+            
+            
 
             return Results.Ok(ordersDtos);
 
@@ -66,5 +91,8 @@ public static class OrderEndpoints
         }).RequireAuthorization("Customer");
         
     }
+
+
+    private static bool Check(string? include) => include is not null && include.ToLower() == "true";
     
 }

@@ -9,6 +9,9 @@ public class OrderDto
     
     public int CustomerId { get; set; }
     
+    public CustomerDto? Customer { get; set; }
+    
+    
     public decimal Price { get; set; }
     
     [StringLength(500)]

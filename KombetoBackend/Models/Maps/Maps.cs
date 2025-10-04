@@ -119,7 +119,6 @@ public static class Maps
             CustomerId = o.CustomerId,
             Note = o.Note,
             Price = o.Price,
-            Items = o.Items.Select(o => o.MapDto()).ToList(),
             Status = o.Status,
             CreatedAt = o.CreatedAt
         };
