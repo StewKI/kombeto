@@ -50,12 +50,12 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     
-    <GluestackUIProvider mode="dark">
+    <GluestackUIProvider mode="light">
       <ThemeProvider value={DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </ThemeProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </ThemeProvider>
     </GluestackUIProvider>
   
   );

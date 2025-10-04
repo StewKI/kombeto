@@ -2,6 +2,7 @@ using FluentValidation;
 using KombetoBackend.Models.Data;
 using KombetoBackend.Models.DTOs;
 using KombetoBackend.Models.Entities;
+using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,15 @@ public static class CustomerEndpoints
     
     public static void MapCustomerEndpoints(this WebApplication app)
     {
+
+        app.MapGet("/customers", async (AppDbContext db) =>
+        {
+            var customers = await db.Customers.ToListAsync();
+            var dtos = customers.Select(c => c.MapDto());
+
+            return Results.Ok(dtos);
+            
+        }).RequireAuthorization("Owner");
         
         app.MapPost("/customers", async (
             AppDbContext db, 
