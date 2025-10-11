@@ -2,6 +2,7 @@ using KombetoBackend.Models.Data;
 using KombetoBackend.Models.DTOs;
 using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace KombetoBackend.Endpoints;
@@ -10,6 +11,34 @@ public static class LoginEndpoints
 {
     public static void MapLoginEndpoints(this WebApplication app)
     {
+        app.MapGet("login/customer/first", async (AppDbContext db, [FromBody] OneTimeLoginDto dto) =>
+        {
+            var oneTimeLogin = await db.OneTimeLogins
+                .Include(l => l.Customer)
+                .Where(l => l.LoginCode == dto.Code)
+                .ToListAsync();
+
+            if (oneTimeLogin.Count == 0)
+            {
+                return Results.Unauthorized();
+            }
+            var login = oneTimeLogin.First();
+            
+            if (login.Used || login.ValidUntil < DateTime.Now)
+            {
+                return Results.Unauthorized();
+            }
+            
+            login.Used = true;
+            await db.SaveChangesAsync();
+
+            return Results.Ok(new
+            {
+                SecurityCode = login.Customer.SecurityCode
+            });
+
+        });
+        
         app.MapPost("/login/customer", async (AppDbContext db, LoginDto dto, IConfiguration config) =>
         {
             var customer = await db.Customers

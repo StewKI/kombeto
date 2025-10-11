@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Owner> Owners => Set<Owner>();
     public DbSet<Discount> Discounts => Set<Discount>();
     public DbSet<Category> Categories => Set<Category>();
+    public DbSet<OneTimeLogin> OneTimeLogins => Set<OneTimeLogin>();
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

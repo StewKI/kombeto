@@ -13,6 +13,31 @@ public static class SecurityService
     public const string JwtIssuer = "KombetoBackend";
     public const string JwtAudience = "KombetoUser";
 
+    private const string OneTimeCharset = "123456789";
+    
+    public static string GenerateOneTimeCode()
+    {
+        int length = 9;
+        var bytes = new byte[length];
+        var result = new StringBuilder(length);
+
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(bytes);
+        }
+
+        foreach (var b in bytes)
+        {
+            result.Append(OneTimeCharset[b % OneTimeCharset.Length]);
+        }
+
+        var resultString = result.ToString();
+
+        resultString = resultString.Insert(6, "-").Insert(3, "-");
+
+        return resultString;
+    }
+    
     public static string GenerateSecurityCode(int length)
     {
         var bytes = new byte[length];

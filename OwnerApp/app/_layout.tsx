@@ -54,6 +54,7 @@ function RootLayoutNav() {
       <ThemeProvider value={DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="new_customer" options={{ presentation: "modal", headerTitle: "Novi kupac"}} />
         </Stack>
       </ThemeProvider>
     </GluestackUIProvider>

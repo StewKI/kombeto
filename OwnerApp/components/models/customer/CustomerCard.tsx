@@ -13,7 +13,7 @@ interface CustomerCardProps {
 function CustomerCard({customer}: CustomerCardProps) {
   return (
     <>
-      <Card className="gap-2">
+      <Card className="gap-2 mb-4">
         <Heading>{customer.name}</Heading>
         <HStack>
           <Ionicons name="location-sharp" size={24} color="black" />

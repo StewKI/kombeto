@@ -49,8 +49,27 @@ public static class CustomerEndpoints
             };
             db.Customers.Add(customer);
             await db.SaveChangesAsync();
+
+            string loginCode;
+            do
+            {
+                loginCode = SecurityService.GenerateOneTimeCode();
+            } 
+            while (await db.OneTimeLogins.AnyAsync(l => l.LoginCode == loginCode));
+
+            var oneTimeLogin = new OneTimeLogin()
+            {
+                Customer = customer,
+                LoginCode = loginCode
+            };
+
+            db.OneTimeLogins.Add(oneTimeLogin);
+            await db.SaveChangesAsync();
             
-            return Results.Created($"/customers/{customer.Id}", customer);
+            return Results.Created($"/customers/{customer.Id}", new OneTimeLoginDto()
+            {
+                Code = loginCode
+            });
             
         }).RequireAuthorization("Owner");
 
