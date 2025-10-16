@@ -7,7 +7,7 @@ import Modals from "@/components/custom/Modals";
 import {Text} from "@/components/ui/text";
 import {Box} from "@/components/ui/box";
 import ProductSection from "@/components/models/product/ProductSection";
-import {ScrollView} from "react-native";
+import {FlatList, ScrollView} from "react-native";
 import {FullScreenLoader} from "@/components/custom/loader/FullScreenLoader";
 
 
@@ -53,12 +53,17 @@ export default function TabOneScreen() {
         </>
       )}
       <Modals/>
-      <ScrollView>
-        {sections.map((productSection, index) => (
-          <ProductSection key={index} data={productSection}/>
-        ))}
-        <Box className="mt-5"/>
-      </ScrollView>
+      <FlatList 
+        data={sections} 
+        keyExtractor={item => item.name.toString()}
+        renderItem={({item}) => (
+          <ProductSection data={item}/>
+        )}
+        onRefresh={() => load()}
+        refreshing={loading}
+        contentContainerStyle={{paddingBottom: 50}}
+        />
+
     </>
   );
 }
