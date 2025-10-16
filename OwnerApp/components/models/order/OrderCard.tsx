@@ -6,6 +6,7 @@ import {Text} from "@/components/ui/text";
 import {useMemo} from "react";
 import {format} from "date-fns";
 import {HStack} from "@/components/ui/hstack";
+import StatusService from "@/services/models/status/StatusService";
 
 interface OrderCardProps {
   order: Order
@@ -33,6 +34,10 @@ function OrderCard({order}: OrderCardProps) {
         <HStack className="gap-2">
           <Text>Ukupno:</Text>
           <Text bold>{order.price.toFixed(2)} RSD</Text>
+        </HStack>
+        <HStack className="gap-2">
+          <Text>Status:</Text>
+          <Text bold>{StatusService.mapStatus(order.status)}</Text>
         </HStack>
       </VStack>
     </Card>

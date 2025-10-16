@@ -5,17 +5,22 @@ import OrderCard from "@/components/models/order/OrderCard";
 import OrderBackend from "@/services/models/order/OrderBackend";
 import {VStack} from "@/components/ui/vstack";
 import {Alert} from "@/components/ui/alert";
+import {Pressable} from "@/components/ui/pressable";
+import {router} from "expo-router";
+import {useOrderStore} from "@/services/state/OrderState";
 
 
 function OrdersTab() {
   
   const [orders, setOrders] = useState<Order[]>([]);
+  const {setOrder} = useOrderStore();
   
   const load = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await OrderBackend.GetOrders()
+      let response = await OrderBackend.GetOrders()
+      response = response.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
       setOrders(response);
     } catch (error) {
       setError("Greška pri učitavanju porudžbina");
@@ -39,7 +44,12 @@ function OrdersTab() {
       <FlatList
         data={orders} 
         renderItem={order => (
-          <OrderCard order={order.item} />
+          <Pressable onPress={() => {
+            setOrder(order.item);
+            router.push("/order");
+          }}>
+            <OrderCard order={order.item} />
+          </Pressable>
         )}
         keyExtractor={item => item.id.toString()}
         refreshing={loading}
