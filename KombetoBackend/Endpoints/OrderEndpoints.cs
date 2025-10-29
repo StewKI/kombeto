@@ -6,6 +6,7 @@ using KombetoBackend.Models.DTOs.Validators;
 using KombetoBackend.Models.Entities;
 using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
+using KombetoBackend.Services.Money;
 using Microsoft.EntityFrameworkCore;
 
 namespace KombetoBackend.Endpoints;
@@ -18,7 +19,8 @@ public static class OrderEndpoints
             int? customerId,
             string? includeCustomer,
             string? includeItems,
-            AppDbContext db) =>
+            AppDbContext db,
+            PublicPriceCalcService publicPriceService) =>
         {
             IQueryable<Order> ordersSet = db.Orders
                 .Include(o => o.Customer)
@@ -44,7 +46,7 @@ public static class OrderEndpoints
                     dto.Items = o.Items.Select(i =>
                     {
                         var iDto = i.MapDto();
-                        iDto.Product = i.Product.MapDto();
+                        iDto.Product = i.Product.MapDto(publicPriceService.Increase(i.Product.Price));
                         return iDto;
                     }).ToList();
                 }

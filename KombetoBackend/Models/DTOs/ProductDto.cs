@@ -9,6 +9,8 @@ public record ProductDto
     public string? ImageUrl { get; set; }
     
     public string? Variations { get; set; }
+    
+    public List<int>? Categories { get; set; }
 }
 
 public record CreateProductDto
@@ -29,6 +31,7 @@ public record UpdateProductDto
     public string? ImageUrl { get; set; }
     
     public string? Variations { get; set; }
+    public List<int>? Categories { get; set; }
 }
 
 public record ProductWithDiscountsDto : ProductDto

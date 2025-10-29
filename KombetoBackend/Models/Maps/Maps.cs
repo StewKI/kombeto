@@ -67,13 +67,14 @@ public static class Maps
         };
     }
 
-    public static ProductDto MapDto(this Product p)
+    public static ProductDto MapDto(this Product p, decimal publicPrice)
     {
         return new ProductDto()
         {
             Id = p.Id,
             Name = p.Name,
-            Price = p.Price,
+            Price = publicPrice,
+            BasePrice = p.Price,
             ImageUrl = p.ImageUrl,
             Variations = p.Variations
         };

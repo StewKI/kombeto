@@ -56,6 +56,8 @@ function RootLayoutNav() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="new_customer" options={{ presentation: "modal", headerTitle: "Novi kupac"}} />
           <Stack.Screen name="edit_customer" options={{ presentation: "modal", headerTitle: "Izmeni kupca"}} />
+          <Stack.Screen name="new_product" options={{ presentation: "modal", headerTitle: "Novi artikal"}} />
+          <Stack.Screen name="edit_product" options={{ presentation: "modal", headerTitle: "Izmeni artikal"}} />
           <Stack.Screen name="order" options={{ presentation: "modal", headerTitle: "Porudžbina"}} />
         </Stack>
       </ThemeProvider>

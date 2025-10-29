@@ -4,6 +4,8 @@ using KombetoBackend.Models.Entities;
 using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
 using KombetoBackend.Services.Entities.Product;
+using KombetoBackend.Services.Money;
+using Microsoft.EntityFrameworkCore;
 
 namespace KombetoBackend.Endpoints.Products;
 
@@ -13,14 +15,28 @@ public static class OwnerProductEndpoints
     {
         
 
-        app.MapGet("/products/{id:int}", async (AppDbContext db, int id) =>
+        app.MapGet("/products/{id:int}", async (AppDbContext db, PublicPriceCalcService priceService, int id) =>
         {
             var product = await db.Products.FindAsync(id);
-            return product is not null ? Results.Ok(product.MapDto()) : Results.NotFound();
+            return product is not null ? Results.Ok(product.MapDto(priceService.Increase(product.Price))) : Results.NotFound();
 
         }).RequireAuthorization("CustomerOwner");
+
+        app.MapGet("/products/all", async (AppDbContext db, PublicPriceCalcService priceService) =>
+        {
+            var products = await db.Products.Include(p => p.Categories).ToListAsync();
+            var dtos = products.Select(p =>
+            {
+                var dto = p.MapDto(priceService.Increase(p.Price));
+                dto.Categories = p.Categories.Select(c => c.Id).ToList();
+                return dto;
+            });
+
+            return Results.Ok(dtos);
+            
+        });
         
-        app.MapPost("/products", async (AppDbContext db, CreateProductDto dto, SearchService searchService) =>
+        app.MapPost("/products", async (AppDbContext db, CreateProductDto dto, SearchService searchService, PublicPriceCalcService priceService) =>
         {
             var product = dto.MapFromDto();
 
@@ -44,14 +60,21 @@ public static class OwnerProductEndpoints
             await db.SaveChangesAsync();
             
             searchService.ResetCache();
+
+            var dtoNew = product.MapDto(priceService.Increase(product.Price));
+            dtoNew.Categories = product.Categories.Select(c => c.Id).ToList();
             
-            return Results.Created($"/products/{product.Id}", product.Id);
+            return Results.Created($"/products/{product.Id}", dtoNew);
             
         }).RequireAuthorization("Owner");
         
-        app.MapPatch("/products/{id:int}", async (AppDbContext db, int id, UpdateProductDto dto, SearchService searchService) =>
+        app.MapPatch("/products/{id:int}", async (AppDbContext db, int id, UpdateProductDto dto, SearchService searchService, PublicPriceCalcService priceService) =>
         {
-            var product = await db.Products.FindAsync(id);
+            var product = await db.Products
+                .Include(p => p.Categories)
+                .Where(p=>p.Id == id)
+                .FirstOrDefaultAsync();
+            
             if (product is null) return Results.NotFound();
             
             bool shouldResetCache = false;
@@ -68,11 +91,25 @@ public static class OwnerProductEndpoints
                 else product.Variations = dto.Variations;
             }
         
+            
+            if (dto.Categories is not null)
+            {
+                var categories = await db.Categories
+                    .Where(c => dto.Categories.Contains(c.Id))
+                    .ToListAsync();
+
+                // replace the whole collection
+                product.Categories = categories;
+            }
+
             await db.SaveChangesAsync();
             
             if (shouldResetCache) searchService.ResetCache();
             
-            return Results.Ok(product);
+            var dtoNew = product.MapDto(priceService.Increase(product.Price));
+            dtoNew.Categories = product.Categories.Select(c => c.Id).ToList();
+            
+            return Results.Ok(dtoNew);
             
         }).RequireAuthorization("Owner");
         

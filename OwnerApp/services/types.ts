@@ -10,9 +10,11 @@ export type Customer = {
 export type Product = {
   id: number,
   name: string,
+  basePrice: number,
   price: number,
   imageUrl: string,
   variations: string
+  categories: number[]
 }
 
 export type OrderItem = {
@@ -33,4 +35,10 @@ export type Order = {
   createdAt: string,
   status: number,
   items: OrderItem[]
+}
+
+export type Category = {
+  id: number,
+  name: string,
+  color: string,
 }
