@@ -17,7 +17,7 @@ public static class Maps
         };
     }
 
-    public static ProductWithDiscountsDto MapDtoWithDiscounts(this Product p)
+    public static ProductWithDiscountsDto MapDtoWithDiscounts(this Product p, decimal publicPrice)
     {
         var discounts = p.Discounts
             .Select(d => d.MapDto())
@@ -27,7 +27,8 @@ public static class Maps
         {
             Id = p.Id,
             Name = p.Name,
-            Price = p.Price,
+            Price = publicPrice,
+            BasePrice = p.Price,
             ImageUrl = p.ImageUrl,
             Variations = p.Variations,
             Discounts = discounts,

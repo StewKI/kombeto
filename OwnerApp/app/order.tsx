@@ -8,6 +8,8 @@ import {Card} from "@/components/ui/card";
 import {format} from "date-fns";
 import StatusService from "@/services/models/status/StatusService";
 import CustomerCard from "@/components/models/customer/CustomerCard";
+import {Textarea, TextareaInput} from "@/components/ui/textarea";
+import {Box} from "@/components/ui/box";
 
 
 function OrderPage() {
@@ -42,6 +44,12 @@ function OrderPage() {
               <Text>Status:</Text>
               <Text bold>{StatusService.mapStatus(order.status)}</Text>
             </HStack>
+            <HStack className="gap-2">
+              <Text>Napomena:</Text>
+              <Textarea className="h-24" isReadOnly={true}>
+                <TextareaInput value={order.note}/>
+              </Textarea>
+            </HStack>
           </VStack>
         </Card>
 
@@ -49,16 +57,23 @@ function OrderPage() {
           <VStack className="gap-2">
             <Heading>Stavke</Heading>
             {order.items.map((item, index) => (
-              <HStack key={index} className="justify-between border-t-2 pt-2">
-                <Text>{item.product.name}</Text>
-                <HStack className="gap-2">
-                  <Text>{item.price.toFixed(2)} RSD x</Text>
-                  <Text bold size={"xl"}>{item.quantity}</Text>
+              <VStack key={index}>
+                <HStack className="justify-between border-t-2 pt-2">
+                  <Text className="flex-grow align-middle font-semibold">{item.product.name}</Text>
+                  <HStack className="gap-2">
+                    <Text>{item.price.toFixed(2)} RSD</Text>
+                    <Text bold size={"xl"}> x {item.quantity}</Text>
+                  </HStack>
                 </HStack>
-              </HStack>
+                {item.note && (
+                  <Text>  - {item.note}</Text>
+                )}
+              </VStack>
+              
             ))}
           </VStack>
         </Card>
+        <Box className="h-52"/>
       </VStack>
     </ScrollView>
   )

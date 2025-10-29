@@ -2,7 +2,7 @@ import {use, useEffect, useState} from "react";
 import {Customer} from "@/services/types";
 import CustomerBackend from "@/services/models/customer/CustomerBackend";
 import {VStack} from "@/components/ui/vstack";
-import {FlatList} from "react-native";
+import {FlatList, ScrollView} from "react-native";
 import {Alert} from "@/components/ui/alert";
 import CustomerCard from "@/components/models/customer/CustomerCard";
 import {FullScreenLoader} from "@/components/custom/loader/FullScreenLoader";
@@ -61,13 +61,12 @@ function CustomersTab() {
           </Card>
         )}
         
-        <FlatList
-          data={customers}
-          renderItem={customer => (
-            <CustomerCard customer={customer.item} />
-          )}
-          keyExtractor={item => item.id.toString()}
-        />
+        <ScrollView>
+          {customers.map((customer) => (
+            <CustomerCard key={customer.id} customer={customer} />
+          ))}
+          <Box className="h-52"/>
+        </ScrollView>
       </VStack>
     </>
   )

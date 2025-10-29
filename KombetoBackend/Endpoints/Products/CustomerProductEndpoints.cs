@@ -3,6 +3,7 @@ using KombetoBackend.Models.DTOs;
 using KombetoBackend.Models.Maps;
 using KombetoBackend.Services;
 using KombetoBackend.Services.Entities.Product;
+using KombetoBackend.Services.Money;
 
 namespace KombetoBackend.Endpoints.Products;
 
@@ -28,7 +29,7 @@ public static class CustomerProductEndpoints
         }).RequireAuthorization("Customer");
         
         
-        app.MapGet("/products", async (SearchService searchService, string? search, int page = 1,
+        app.MapGet("/products", async (SearchService searchService, PublicPriceCalcService publicPriceService, string? search, int page = 1,
             int pageSize = 20, string? sortBy = "relevance", int? category = null) =>
         {
             search ??= "";
@@ -63,7 +64,7 @@ public static class CustomerProductEndpoints
                 .ToList();
             
             // Discounts
-            var final = paged.Select(p => p.MapDtoWithDiscounts());
+            var final = paged.Select(p => p.MapDtoWithDiscounts(publicPriceService.Increase(p.Price)));
 
             return Results.Ok(new
             {

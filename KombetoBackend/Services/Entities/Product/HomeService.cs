@@ -1,6 +1,7 @@
 using KombetoBackend.Models.Data;
 using KombetoBackend.Models.DTOs;
 using KombetoBackend.Models.Maps;
+using KombetoBackend.Services.Money;
 using Microsoft.EntityFrameworkCore;
 
 namespace KombetoBackend.Services.Entities.Product;
@@ -9,11 +10,13 @@ public class HomeService
 {
     private readonly AppDbContext db;
     private readonly IConfiguration config;
+    private readonly PublicPriceCalcService publicPriceService;
 
-    public HomeService(AppDbContext db, IConfiguration config)
+    public HomeService(AppDbContext db, IConfiguration config, PublicPriceCalcService publicPriceService)
     {
         this.db = db;
         this.config = config;
+        this.publicPriceService = publicPriceService;
     }
     
     public async Task<List<ProductSectionDto>> GetProductSections()
@@ -43,7 +46,7 @@ public class HomeService
                 .Include(p => p.Discounts)
                 .OrderBy(p => EF.Functions.Random())
                 .Take(20)
-                .Select(p => p.MapDtoWithDiscounts())
+                .Select(p => p.MapDtoWithDiscounts(publicPriceService.Increase(p.Price)))
                 .ToListAsync();
             
             discountSections.Add(new ProductSectionDto()
@@ -65,7 +68,7 @@ public class HomeService
             .Include(p => p.Discounts)
             .ToListAsync();
 
-        var variousProductsDto = variousProducts.Select(p => p.MapDtoWithDiscounts());
+        var variousProductsDto = variousProducts.Select(p => p.MapDtoWithDiscounts(publicPriceService.Increase(p.Price)));
 
         return new ProductSectionDto()
         {
