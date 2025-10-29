@@ -11,11 +11,12 @@ import {Button, ButtonText} from "@/components/ui/button";
 import {Box} from "@/components/ui/box";
 import {Heading} from "@/components/ui/heading";
 import {router} from "expo-router";
+import {useCustomersStore} from "@/services/state/CustomersState";
 
 
 function CustomersTab() {
   
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const {customers, setCustomers} = useCustomersStore(); 
   
   const load = async () => {
     setLoading(true);

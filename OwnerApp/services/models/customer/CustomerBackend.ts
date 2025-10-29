@@ -1,7 +1,8 @@
 import ApiService from "@/services/ApiService";
 import {Customer} from "@/services/types";
 
-type Login = {
+export type Login = {
+  id: number;
   code: string;
 }
 
@@ -20,7 +21,19 @@ export default class CustomerBackend {
       discount: discount
     })
     
-    return res.code;
+    return res;
+  }
+  
+  public static async UpdateCustomer(id: number, name: string, address: string, phone: string, discount: number)
+  {
+    const res = await ApiService.patch(`customers/${id}`, {
+      name: name,
+      address: address,
+      phone: this.toInternationalSerbianNumber(phone),
+      discount: discount
+    })
+    
+    console.log(res);
   }
 
   private static toInternationalSerbianNumber(phone: string): string {

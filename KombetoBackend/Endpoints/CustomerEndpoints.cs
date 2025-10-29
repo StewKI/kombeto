@@ -68,7 +68,8 @@ public static class CustomerEndpoints
             
             return Results.Created($"/customers/{customer.Id}", new OneTimeLoginDto()
             {
-                Code = loginCode
+                Code = loginCode,
+                Id = customer.Id
             });
             
         }).RequireAuthorization("Owner");
@@ -90,7 +91,10 @@ public static class CustomerEndpoints
             if (dto.Discount.HasValue) customer.Discount = dto.Discount.Value;
             
             await db.SaveChangesAsync();
-            return Results.Ok();
+            return Results.Ok(new
+            {
+                customer.Id
+            });
             
         }).RequireAuthorization("Owner");
     }

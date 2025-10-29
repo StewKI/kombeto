@@ -7,12 +7,16 @@ import {Ionicons} from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {Button, ButtonText} from "@/components/ui/button";
 import {Alert, Linking} from "react-native";
+import {useCustomersStore} from "@/services/state/CustomersState";
+import {router} from "expo-router";
 
 interface CustomerCardProps {
   customer: Customer
 }
 
 function CustomerCard({customer}: CustomerCardProps) {
+  
+  const {setEditCustomer} = useCustomersStore();
 
   const makeCall = async () => {
     const url = `tel:${customer.phone}`;
@@ -47,10 +51,19 @@ function CustomerCard({customer}: CustomerCardProps) {
         <HStack>
           <Text className={"align-middle"}>Popust: </Text>
           {customer.discount > 0 ? (
-            <Text size={"lg"} bold>-{customer.discount}%</Text>
+            <Text size={"lg"} bold className="align-middle">-{customer.discount}%</Text>
           ) : (
             <Text>/</Text>
           )}
+          <Button className="ml-auto" onPress={() => {
+            setEditCustomer(customer);
+            router.push("/edit_customer");
+          }}>
+            <ButtonText>Izmeni</ButtonText>
+          </Button>
+        </HStack>
+        <HStack>
+          
         </HStack>
       </Card>
     </>
