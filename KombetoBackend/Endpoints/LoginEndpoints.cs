@@ -11,8 +11,22 @@ public static class LoginEndpoints
 {
     public static void MapLoginEndpoints(this WebApplication app)
     {
-        app.MapGet("login/customer/first", async (AppDbContext db, [FromBody] OneTimeLoginDto dto) =>
+        app.MapPost("login/customer/first", async (AppDbContext db, [FromBody] OneTimeLoginDto dto) =>
         {
+            //TEST
+
+            if (dto.Code == "123-789-456")
+            {
+                var customer = await db.Customers.FindAsync(1);
+                
+                return Results.Ok(new
+                {
+                    SecurityCode = customer.SecurityCode,
+                    Valid = true
+                });
+            }
+            
+            //NORMAL
             var oneTimeLogin = await db.OneTimeLogins
                 .Include(l => l.Customer)
                 .Where(l => l.LoginCode == dto.Code)
@@ -26,7 +40,10 @@ public static class LoginEndpoints
             
             if (login.Used || login.ValidUntil < DateTime.Now)
             {
-                return Results.Unauthorized();
+                return Results.Ok(new
+                {
+                    Valid = false
+                });
             }
             
             login.Used = true;
@@ -34,7 +51,8 @@ public static class LoginEndpoints
 
             return Results.Ok(new
             {
-                SecurityCode = login.Customer.SecurityCode
+                SecurityCode = login.Customer.SecurityCode,
+                Valid = true
             });
 
         });
@@ -47,13 +65,18 @@ public static class LoginEndpoints
             
             if (customer is null) return Results.Unauthorized();
 
-            if (customer.DeviceId is null)
+            if (customer.Id != 1)
             {
-                customer.DeviceId = dto.DeviceId;
-                await db.SaveChangesAsync();
-            }
+                
+                if (customer.DeviceId is null)
+                {
+                    customer.DeviceId = dto.DeviceId;
+                    await db.SaveChangesAsync();
+                }
             
-            if (customer.DeviceId != dto.DeviceId) return Results.Unauthorized();
+                if (customer.DeviceId != dto.DeviceId) return Results.Unauthorized();
+
+            }
             
             var jwt = SecurityService.GenerateJwtCustomer(customer, config);
             

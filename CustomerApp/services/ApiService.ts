@@ -17,7 +17,7 @@ export class UnauthorizedError extends Error {
 }
 
 export default class ApiService {
-  private static readonly HOSTNAME: string = "192.168.8.143";
+  private static readonly HOSTNAME: string = "192.168.8.183";
   public static readonly BASE_URL = `http://${this.HOSTNAME}:5296/`;
 
   private static buildHeaders(

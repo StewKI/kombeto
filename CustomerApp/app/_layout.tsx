@@ -50,6 +50,7 @@ function RootLayoutNav() {
     <GluestackUIProvider mode="light">
       <>
         <Stack>
+          <Stack.Screen name="login" options={{ headerTitle: 'Kombeto' }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="cart" options={{ presentation: 'modal', headerTitle: 'Korpa' }} />
           <Stack.Screen name="order" options={{ presentation: 'modal', headerTitle: 'Kasa' }} />
