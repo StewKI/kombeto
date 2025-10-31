@@ -32,4 +32,6 @@ public class Customer
     
     [MaxLength(128)]
     public string? DeviceId { get; set; }
+
+    public bool Internal { get; set; } = false;
 }

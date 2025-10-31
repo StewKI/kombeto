@@ -14,9 +14,12 @@ public static class CustomerEndpoints
     public static void MapCustomerEndpoints(this WebApplication app)
     {
 
-        app.MapGet("/customers", async (AppDbContext db) =>
+        app.MapGet("/customers", async (AppDbContext db, string? isInternal = null) =>
         {
-            var customers = await db.Customers.ToListAsync();
+            bool loadInternal = isInternal == "true";
+            var customers = await db.Customers
+                .Where(c => c.Internal == loadInternal)
+                .ToListAsync();
             var dtos = customers.Select(c => c.MapDto());
 
             return Results.Ok(dtos);
@@ -45,7 +48,8 @@ public static class CustomerEndpoints
                 Phone = dto.Phone,
                 Discount = dto.Discount,
                 SecurityCode = securityCode,
-                DeviceId = null
+                DeviceId = null,
+                Internal = dto.Internal
             };
             db.Customers.Add(customer);
             await db.SaveChangesAsync();

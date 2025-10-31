@@ -34,4 +34,6 @@ public class CreateOrderDto
     public string? Note { get; set; } = null;
     
     public List<CreateOrderItemDto> Items { get; set; } = new();
+    
+    public bool Internal { get; set; } = false;
 }

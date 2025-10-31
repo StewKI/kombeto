@@ -19,6 +19,7 @@ public static class OrderEndpoints
             int? customerId,
             string? includeCustomer,
             string? includeItems,
+            string? isInternal,
             AppDbContext db,
             PublicPriceCalcService publicPriceService) =>
         {
@@ -31,6 +32,9 @@ public static class OrderEndpoints
             {
                 ordersSet = ordersSet.Where(o => o.CustomerId == customerId);
             }
+
+            bool loadInternal = isInternal == "true";
+            ordersSet = ordersSet.Where(o => o.Internal == loadInternal);
 
             var orders = await ordersSet.ToListAsync();
 

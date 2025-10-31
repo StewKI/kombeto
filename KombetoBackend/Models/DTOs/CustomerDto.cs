@@ -15,6 +15,8 @@ public record CreateCustomerDto
     public string Address { get; set; } = null!;
     public string Phone { get; set; } = null!;
     public decimal Discount { get; set; }
+
+    public bool Internal { get; set; } = false;
 }
 
 public record UpdateCustomerDto

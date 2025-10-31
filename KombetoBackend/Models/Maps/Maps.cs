@@ -97,7 +97,8 @@ public static class Maps
         {
             CustomerId = dto.CustomerId,
             Price = dto.Price,
-            Note = dto.Note
+            Note = dto.Note,
+            Internal = dto.Internal,
         };
     }
 

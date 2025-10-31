@@ -26,6 +26,8 @@ public class Order
     public decimal Price { get; set; }
 
     public List<OrderItem> Items { get; set; } = new();
+
+    public bool Internal { get; set; } = false;
 }
 
 public enum OrderStatus
