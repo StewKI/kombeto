@@ -2,7 +2,7 @@
 import {VStack} from "@/components/ui/vstack";
 import {HStack} from "@/components/ui/hstack";
 import {Text} from "@/components/ui/text";
-import InputFieldLabel from "@/components/custom/InputFieldLabel";
+import InputFieldLabel, {InputPhoneFieldLabel} from "@/components/custom/InputFieldLabel";
 import {QuantityInputSimple} from "@/components/custom/QuantityInput";
 import ValidationService from "@/services/models/validation/ValidationService";
 import {Alert} from "@/components/ui/alert";
@@ -70,7 +70,7 @@ function CustomerForm({onSubmit, btnText = undefined, customer = undefined}: Cus
 
         <InputFieldLabel label="Ime" value={name} onChange={(val) => setName(val)}/>
         <InputFieldLabel label="Adresa" value={address} onChange={(val) => setAddress(val)}/>
-        <InputFieldLabel label="Telefon" value={phone} onChange={(val) => setPhone(val)}/>
+        <InputPhoneFieldLabel label="Telefon" value={phone} onChange={(val) => setPhone(val)}/>
 
         <HStack>
           <Text size="xl" bold className="align-middle">Popust:</Text>

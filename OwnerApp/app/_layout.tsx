@@ -53,7 +53,9 @@ function RootLayoutNav() {
     <GluestackUIProvider mode="light">
       <ThemeProvider value={DefaultTheme}>
         <Stack>
+          <Stack.Screen name="home" options={{ presentation: "modal", headerTitle: "Kombeto uprava"}} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs1)" options={{ headerShown: false }} />
           <Stack.Screen name="new_customer" options={{ presentation: "modal", headerTitle: "Novi kupac"}} />
           <Stack.Screen name="edit_customer" options={{ presentation: "modal", headerTitle: "Izmeni kupca"}} />
           <Stack.Screen name="new_product" options={{ presentation: "modal", headerTitle: "Novi artikal"}} />

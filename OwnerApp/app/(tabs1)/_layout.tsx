@@ -47,14 +47,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIconMaterial name="shopping-outline" color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="discounts"
-        options={{
-          headerLeft: () => <Button className="mx-3" onPress={() => router.back()}><FontAwesome name={"home"} size={24} color={"white"}/></Button>,
-          title: 'Popusti',
-          tabBarIcon: ({ color }) => <TabBarIconMaterial name="sale-outline" color={color} />,
-        }}
-      />
     </Tabs>
   );
 }
