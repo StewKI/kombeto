@@ -35,8 +35,16 @@ export default function TabLayout() {
         name="customers"
         options={{
           headerLeft: () => <Button className="mx-3" onPress={() => router.back()}><FontAwesome name={"home"} size={24} color={"white"}/></Button>,
-          title: 'Kupci',
-          tabBarIcon: ({ color }) => <TabBarIconMaterial name="human-queue" color={color} />,
+          title: 'Maloprodaje',
+          tabBarIcon: ({ color }) => <TabBarIconMaterial name="store" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="new_internal_order"
+        options={{
+          headerLeft: () => <Button className="mx-3" onPress={() => router.back()}><FontAwesome name={"home"} size={24} color={"white"}/></Button>,
+          title: 'Upiši porudžbinu',
+          tabBarIcon: ({ color }) => <TabBarIcon name="pencil-square-o" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -47,6 +55,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIconMaterial name="shopping-outline" color={color} />,
         }}
       />
+    
     </Tabs>
   );
 }

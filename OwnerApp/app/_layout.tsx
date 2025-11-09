@@ -57,10 +57,16 @@ function RootLayoutNav() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs1)" options={{ headerShown: false }} />
           <Stack.Screen name="new_customer" options={{ presentation: "modal", headerTitle: "Novi kupac"}} />
+          <Stack.Screen name="new_customer_internal" options={{ presentation: "modal", headerTitle: "Nova maloprodaja"}} />
           <Stack.Screen name="edit_customer" options={{ presentation: "modal", headerTitle: "Izmeni kupca"}} />
+          <Stack.Screen name="edit_customer_internal" options={{ presentation: "modal", headerTitle: "Izmeni maloprodaju"}} />
           <Stack.Screen name="new_product" options={{ presentation: "modal", headerTitle: "Novi artikal"}} />
           <Stack.Screen name="edit_product" options={{ presentation: "modal", headerTitle: "Izmeni artikal"}} />
           <Stack.Screen name="order" options={{ presentation: "modal", headerTitle: "Porudžbina"}} />
+          <Stack.Screen name="write_order" options={{ presentation: "modal", headerTitle: "Upiši porudžbinu"}} />
+          <Stack.Screen name="new_discount" options={{ presentation: "modal", headerTitle: "Novi popust"}} />
+          <Stack.Screen name="edit_discount" options={{ presentation: "modal", headerTitle: "Izmeni popust"}} />
+          <Stack.Screen name="edit_discount_products" options={{ presentation: "modal", headerTitle: "Izmeni artikle u popustu"}} />
         </Stack>
       </ThemeProvider>
     </GluestackUIProvider>

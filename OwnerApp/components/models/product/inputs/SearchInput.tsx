@@ -35,6 +35,7 @@ export const SearchInput: React.FC<Props> = ({ onSearch }) => {
         onChangeText={setValue}
         placeholder="Pretrazi..."
         style={{
+          width: 200,
           padding: 10,
           paddingRight: 30,
           borderWidth: 1,

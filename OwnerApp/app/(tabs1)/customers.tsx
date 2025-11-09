@@ -22,7 +22,7 @@ function CustomersTab() {
     setLoading(true);
     setError(null);
     try {
-      const result = await CustomerBackend.GetCustomers();
+      const result = await CustomerBackend.GetCustomers(true);
       setCustomers(result);
     }
     catch (e) {
@@ -46,12 +46,12 @@ function CustomersTab() {
       <VStack className="p-4 gap-4">
         
         <Box className="mb-4">
-          <Button className="h-16" onPress={() => router.push("/new_customer")}>
-            <ButtonText>Novi kupac</ButtonText>
+          <Button className="h-16" onPress={() => router.push("/new_customer_internal")}>
+            <ButtonText>Nova maloprodaja</ButtonText>
           </Button>
         </Box>
         
-        <Heading>Postojeći kupci:</Heading>
+        <Heading>Postojeće maloprodaje:</Heading>
         
         {error && (
           <Card className="mb-4">
@@ -64,7 +64,7 @@ function CustomersTab() {
         
         <ScrollView>
           {customers.map((customer) => (
-            <CustomerCard key={customer.id} customer={customer} />
+            <CustomerCard key={customer.id} customer={customer} internal={true} />
           ))}
           <Box className="h-52"/>
         </ScrollView>

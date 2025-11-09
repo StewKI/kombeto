@@ -10,8 +10,6 @@ public class CreateDiscountDtoValidator : AbstractValidator<CreateDiscountDto>
             .NotEmpty()
             .MaximumLength(100);
         
-        RuleFor(x => x.Products)
-            .NotEmpty();
         
         RuleFor(x => x.Color)
             .NotEmpty()

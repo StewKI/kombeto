@@ -42,3 +42,16 @@ export type Category = {
   name: string,
   color: string,
 }
+
+export type CartItem = Product & {
+  quantity: number,
+  variation_list: string[],
+}
+
+export type Discount = {
+  id: number,
+  name: string,
+  discount: number,
+  endDate?: string,
+  color: string,
+}

@@ -11,10 +11,11 @@ import {useCustomersStore} from "@/services/state/CustomersState";
 import {router} from "expo-router";
 
 interface CustomerCardProps {
-  customer: Customer
+  customer: Customer,
+  internal?: boolean
 }
 
-function CustomerCard({customer}: CustomerCardProps) {
+function CustomerCard({customer, internal = false}: CustomerCardProps) {
   
   const {setEditCustomer} = useCustomersStore();
 
@@ -57,7 +58,12 @@ function CustomerCard({customer}: CustomerCardProps) {
           )}
           <Button className="ml-auto" onPress={() => {
             setEditCustomer(customer);
-            router.push("/edit_customer");
+            if (internal) {
+              router.push("/edit_customer_internal");
+            }
+            else {
+              router.push("/edit_customer");
+            }
           }}>
             <ButtonText>Izmeni</ButtonText>
           </Button>

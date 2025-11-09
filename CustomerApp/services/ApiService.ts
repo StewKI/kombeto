@@ -17,9 +17,13 @@ export class UnauthorizedError extends Error {
 }
 
 export default class ApiService {
-  private static readonly HOSTNAME: string = "stwstore.stewki.net";
-  public static readonly BASE_URL = `http://${this.HOSTNAME}:5000/`;
+  //private static readonly HOSTNAME: string = "stwstore.stewki.net";
+  //public static readonly BASE_URL = `https://${this.HOSTNAME}/kombeto/`;
 
+
+  private static readonly HOSTNAME: string = "10.168.132.136";
+  public static readonly BASE_URL = `http://${this.HOSTNAME}/`;
+  
   private static buildHeaders(
     headers?: Record<string, string>,
     includeJson = true

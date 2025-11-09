@@ -11,7 +11,6 @@ function Modals() {
       <MsgDialog show={content !== undefined} title={title} onOk={() => clearMsg()}>
         {content}
       </MsgDialog>
-      <SearchBoxDialog/>
     </>
   )
 }

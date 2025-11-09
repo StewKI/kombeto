@@ -13,6 +13,9 @@ import CategoryBack from "@/services/models/category/CategoryBack";
 import {HStack} from "@/components/ui/hstack";
 import {SearchInput} from "@/components/models/product/inputs/SearchInput";
 import CategoryMultiSelect from "@/components/models/product/inputs/CategoryMultiSelect";
+import AddToCart from "@/components/models/cart/AddToCart";
+import MsgDialog from "@/components/custom/diaolog/MsgDialog";
+import Modals from "@/components/custom/Modals";
 
 
 function ProductsTab() {
@@ -70,29 +73,28 @@ function ProductsTab() {
   }, []);
   
   return (
-    <VStack className="p-4 gap-4">
-      <Box className="mb-4">
-        <Button className="h-16" onPress={() => router.push("/new_product")}>
-          <ButtonText>Novi artikal</ButtonText>
-        </Button>
-      </Box>
-      <CategoryMultiSelect selectedIds={selectedIds} categories={allCategories} onChange={(cats) => {setSelectedIds(cats)}}/>
+    <>
+      <VStack className="p-4 gap-4">
 
-      <HStack className="justify-between align-middle">
-        <Heading className="align-middle">Postojeći artikli:</Heading>
-        <SearchInput onSearch={(val) => setFilterString(val)}/>
-      </HStack>
-      
-      
-      <FlatList
-        data={filteredProducts}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
-          <ProductCard product={item}/>
-        )}
-        contentContainerStyle={{paddingBottom: 200}}
+        <CategoryMultiSelect selectedIds={selectedIds} categories={allCategories} onChange={(cats) => {setSelectedIds(cats)}}/>
+
+        <HStack className="justify-between align-middle">
+          <Heading className="align-middle">Artikli:</Heading>
+          <SearchInput onSearch={(val) => setFilterString(val)}/>
+        </HStack>
+
+
+        <FlatList
+          data={filteredProducts}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => (
+            <ProductCard product={item} toAdd={true}/>
+          )}
+          contentContainerStyle={{paddingBottom: 200}}
         />
-    </VStack>
+      </VStack>
+    </>
+    
   )
 }
 

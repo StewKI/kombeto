@@ -8,17 +8,20 @@ export type Login = {
 
 export default class CustomerBackend {
   
-  public static async GetCustomers() {
-    return await ApiService.get<Customer[]>(`customers`);
+  public static async GetCustomers(internal: boolean = false) {
+    let param = "";
+    if (internal) param = "?isInternal=true";
+    return await ApiService.get<Customer[]>(`customers${param}`);
   }
   
-  public static async CreateCustomer(name: string, address: string, phone: string, discount: number) {
+  public static async CreateCustomer(name: string, address: string, phone: string, discount: number, internal: boolean = false) {
     
     const res = await ApiService.post<Login>("customers", {
       name: name,
       address: address,
       phone: this.toInternationalSerbianNumber(phone),
-      discount: discount
+      discount: discount,
+      internal: internal
     })
     
     return res;
